@@ -1,7 +1,7 @@
 const express = require("express");
 const logger = require("morgan");
 const cors = require("cors");
-const { swaggerRoute } = require("./routes/api/swagger");
+const { swaggerRoute } = require("./routes/api");
 
 require("dotenv").config();
 
