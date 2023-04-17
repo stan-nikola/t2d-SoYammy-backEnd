@@ -3,7 +3,7 @@ const {
 } = require("./ingredientControllers/getIngredientsListController");
 const {
   getRecipeByIngredientsController,
-} = require("./recipeControllers/getRecipeByIngredientsController");
+} = require("./ingredientControllers/getRecipeByIngredientsController");
 
 module.exports = {
   getIngredientsListController,
