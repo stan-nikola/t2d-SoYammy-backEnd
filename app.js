@@ -5,6 +5,8 @@ const { swaggerRoute } = require("./routes/api");
 
 require("dotenv").config();
 
+const recipesRouter = require("./routes/api/recipe");
+
 const app = express();
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
@@ -17,7 +19,7 @@ app.use(express.json());
 // app.use("/api/users", userRouter);
 
 // app.use("/api/ingredients", ingredientRouter);
-// app.use("/api/recipe", ingredientRouter);
+app.use("/api/recipes", recipesRouter);
 
 app.use("/api-docs", swaggerRoute);
 
