@@ -1,11 +1,15 @@
 const express = require("express");
 const logger = require("morgan");
 const cors = require("cors");
+
 const {
   swaggerRoute,
   ingredientsRoute,
   recipesRoute,
 } = require("./routes/api");
+
+const authRouter = require("./routes/api/auth");
+
 const { errorHandler } = require("./helpers");
 
 const app = express();
@@ -16,7 +20,7 @@ app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
 
-// app.use("/api/users", authRouter);
+app.use("/api/auth", authRouter);
 // app.use("/api/users", userRouter);
 
 // app.use("/api/ingredients", ingredientRouter);
