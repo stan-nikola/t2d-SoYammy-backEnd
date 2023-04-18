@@ -1,5 +1,7 @@
-const { getCategoryList } = require("./recipeService");
+const { getRecipes, getRecipesByCategory, getRecipeById } = require("./recipeService");
 
 module.exports = {
-  getCategoryList,
+  getRecipes,
+  getRecipesByCategory,
+  getRecipeById,
 };

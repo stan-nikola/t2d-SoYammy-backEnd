@@ -1,5 +1,4 @@
-const { boolean } = require("joi");
-const { Schema, model } = require("mongoose");
+const { Schema, model, default: mongoose } = require("mongoose");
 
 const { categories } = require("../helpers");
 
@@ -25,15 +24,24 @@ const recipeSchema = new Schema(
       type: String,
       require: [true, "Description is required"],
     },
-    thumb: { type: String, require: true },
-    preview: { type: String, require: true },
+    thumb: { type: String },
+    preview: { type: String },
     time: { type: String, require: [true, "Time is required"] },
     youtube: { type: String },
     tags: { type: [String] },
-    ingredients: {
-      type: Array,
-      default: [],
-    },
+    ingredients: [
+      {
+        id: {
+          type: mongoose.Types.ObjectId,
+          ref: "ingredient",
+        },
+        measure: {
+          type: String,
+          required: [true, "Measure is required"],
+        },
+        _id: false,
+      },
+    ],
     popularity: {
       type: String,
       default: 0,

@@ -6,6 +6,7 @@ const { swaggerRoute } = require("./routes/api");
 require("dotenv").config();
 
 const recipesRouter = require("./routes/api/recipe");
+const { errorHandler } = require("./helpers");
 
 const app = express();
 
@@ -26,5 +27,7 @@ app.use("/api-docs", swaggerRoute);
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });
 });
+
+app.use(errorHandler);
 
 module.exports = app;
