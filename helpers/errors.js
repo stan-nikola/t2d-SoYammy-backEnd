@@ -5,6 +5,20 @@ class SoYummyAppError extends Error {
   }
 }
 
+class RegistrationConflict extends SoYummyAppError {
+  constructor(message) {
+    super(message);
+    this.status = 409;
+  }
+}
+
+class LoginError extends SoYummyAppError {
+  constructor(message) {
+    super(message);
+    this.status = 401;
+  }
+}
+
 class ValidationError extends SoYummyAppError {
   constructor(message) {
     super(message);
@@ -12,4 +26,9 @@ class ValidationError extends SoYummyAppError {
   }
 }
 
-module.exports = { SoYummyAppError, ValidationError };
+module.exports = {
+  SoYummyAppError,
+  RegistrationConflict,
+  LoginError,
+  ValidationError,
+};

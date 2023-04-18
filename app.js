@@ -1,6 +1,9 @@
 const express = require("express");
 const logger = require("morgan");
 const cors = require("cors");
+
+const authRouter = require("./routes/api/auth");
+
 const { swaggerRoute, ingredientsRoute } = require("./routes/api");
 const { errorHandler } = require("./helpers");
 
@@ -12,7 +15,7 @@ app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
 
-// app.use("/api/users", authRouter);
+app.use("/api/auth", authRouter);
 // app.use("/api/users", userRouter);
 
 // app.use("/api/ingredients", ingredientRouter);
