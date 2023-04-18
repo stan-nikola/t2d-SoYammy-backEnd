@@ -1,7 +1,11 @@
 const express = require("express");
 const logger = require("morgan");
 const cors = require("cors");
-const { swaggerRoute, ingredientsRoute } = require("./routes/api");
+const {
+  swaggerRoute,
+  ingredientsRoute,
+  recipesRoute,
+} = require("./routes/api");
 const { errorHandler } = require("./helpers");
 
 const app = express();
@@ -19,6 +23,7 @@ app.use(express.json());
 // app.use("/api/recipe", ingredientRouter);
 
 app.use("/api", ingredientsRoute);
+app.use("/api", recipesRoute);
 
 app.use("/api-docs", swaggerRoute);
 

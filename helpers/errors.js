@@ -12,4 +12,11 @@ class ValidationError extends SoYummyAppError {
   }
 }
 
-module.exports = { SoYummyAppError, ValidationError };
+class RequestError extends SoYummyAppError {
+  constructor(message) {
+    super(message);
+    this.status = 400;
+  }
+}
+
+module.exports = { SoYummyAppError, ValidationError, RequestError };

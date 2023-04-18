@@ -11,12 +11,9 @@ const getRecipeByIngredients = async ({ ingredient }) => {
 
   finnedIngredient.map((item) => ingredientsArr.push(item.id));
 
-  const recipes = await Recipe.find(
-    {
-      "ingredients.id": { $in: ingredientsArr },
-    },
-    { "ingredients._id": 0 }
-  );
+  const recipes = await Recipe.find({
+    "ingredients.id": { $in: ingredientsArr },
+  });
 
   // console.log(ingredientsArr);
 
