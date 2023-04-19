@@ -5,4 +5,4 @@ const getCategoryListController = async (req, res) => {
   res.status(200).json(categoryList);
 };
 
-module.exports = getCategoryListController;
+module.exports = { getCategoryListController };

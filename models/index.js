@@ -1,5 +1,5 @@
 const { connectToDb } = require("./connection");
-const Recipe = require("./recipieModel");
+const { Recipe } = require("./recipieModel");
 
 module.exports = {
   connectToDb,

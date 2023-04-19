@@ -14,7 +14,7 @@ router.get("/category-list", asyncWrapper(getCategoryListController));
 
 router.get("/main-page", asyncWrapper(getRecipesController));
 
-router.get("/:category", asyncWrapper(getRecipesByCategoryController));
+router.get("/category/:category", asyncWrapper(getRecipesByCategoryController));
 
 router.get("/:id", asyncWrapper(getRecipeByIdController));
 

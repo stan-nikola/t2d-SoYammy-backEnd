@@ -2,8 +2,7 @@ const { Recipe } = require("../../models");
 
 const ObjectId = require("mongodb").ObjectId;
 
-const getRecipeById = async ({ id }) => {
-  console.log(ObjectId(id));
+const getRecipeById = async (id) => {
   const result = await Recipe.aggregate([
     { $match: { _id: new ObjectId(id) } },
     {
@@ -16,8 +15,7 @@ const getRecipeById = async ({ id }) => {
     },
   ]);
 
-  //   console.log(result);
   return result;
 };
 
-module.exports = getRecipeById;
+module.exports = {getRecipeById};

@@ -1,6 +1,6 @@
-const getRecipes = require("./getRecipes");
-const getRecipeById = require("./getRecipeById");
-const getRecipesByCategory = require("./getRecipesByCategory");
+const { getRecipes } = require("./getRecipes");
+const { getRecipeById } = require("./getRecipeById");
+const { getRecipesByCategory } = require("./getRecipesByCategory");
 
 module.exports = {
   getRecipes,

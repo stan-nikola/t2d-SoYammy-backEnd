@@ -5,4 +5,4 @@ const getRecipesController = async (req, res, next) => {
   res.status(200).json(result);
 };
 
-module.exports = getRecipesController;
+module.exports = { getRecipesController };

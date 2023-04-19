@@ -42,13 +42,9 @@ const recipeSchema = new Schema(
         _id: false,
       },
     ],
-    popularity: {
-      type: String,
-      default: 0,
-    },
     favorites: {
-      type: Boolean,
-      default: false,
+      type: Array,
+      default: [],
     },
     owner: {
       type: Schema.Types.ObjectId,
@@ -60,4 +56,4 @@ const recipeSchema = new Schema(
 
 const Recipe = model("recipe", recipeSchema);
 
-module.exports = Recipe;
+module.exports = { Recipe };
