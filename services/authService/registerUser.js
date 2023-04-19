@@ -1,6 +1,6 @@
 const { User } = require("../../models/userModel");
 // const { Conflict } = require("http-errors");
-const { RegistrationConflict } = require("../../helpers/errors");
+const { RegistrationConflict } = require("../../helpers");
 const bcrypt = require("bcrypt");
 
 const registerUser = async (requestBody) => {
