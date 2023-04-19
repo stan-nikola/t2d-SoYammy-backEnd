@@ -40,6 +40,13 @@ class RequestError extends SoYummyAppError {
   }
 }
 
+class NonExistingParamsError extends SoYummyAppError {
+  constructor(message) {
+    super(message);
+    this.status = 400;
+  }
+}
+
 module.exports = {
   SoYummyAppError,
   RegistrationConflict,
@@ -47,4 +54,5 @@ module.exports = {
   NotAuthorizedError,
   ValidationError,
   RequestError,
+  NonExistingParamsError,
 };

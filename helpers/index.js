@@ -6,6 +6,7 @@ const {
   NotAuthorizedError,
   ValidationError,
   RequestError,
+  NonExistingParamsError,
 } = require("./errors");
 
 module.exports = {
@@ -16,4 +17,5 @@ module.exports = {
   NotAuthorizedError,
   ValidationError,
   RequestError,
+  NonExistingParamsError,
 };

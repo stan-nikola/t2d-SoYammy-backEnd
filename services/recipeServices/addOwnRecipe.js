@@ -2,8 +2,6 @@ const { Recipe } = require("../../models");
 
 const addOwnRecipe = async (req) => {
   const imageURL = req.file.path;
-  console.log(req.body);
-  console.log(req);
 
   const {
     title,
@@ -29,6 +27,7 @@ const addOwnRecipe = async (req) => {
     youtube,
     tags,
     ingredients,
+    owner: req.user.id,
   });
 
   return newRecipe;
