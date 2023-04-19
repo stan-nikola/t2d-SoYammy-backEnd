@@ -1,20 +1,22 @@
+const cloudinary = require("cloudinary").v2;
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const multer = require("multer");
-const path = require("path");
 
-const tempDir = path.join(__dirname, "../../", "tmp");
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_KEY,
+  api_secret: process.env.CLOUDINARY_SECRET,
+});
 
-const multerConfig = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, tempDir);
-  },
+const recipeImgStorage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  folder: "recipe",
+  allowedFormats: ["jpg", "png"],
   filename: (req, file, cb) => {
     cb(null, file.originalname);
   },
-  limits: {
-    fileSize: 2048,
-  },
 });
 
-const uploadMiddleware = multer({ storage: multerConfig });
+const uploadRecipeImgCloud = multer({ storage: recipeImgStorage });
 
-module.exports = { uploadMiddleware };
+module.exports = { uploadRecipeImgCloud };

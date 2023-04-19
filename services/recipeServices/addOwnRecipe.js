@@ -1,7 +1,9 @@
 const { Recipe } = require("../../models");
 
-const addOwnRecipe = async (body) => {
-  console.log(body);
+const addOwnRecipe = async (req) => {
+  const imageURL = req.file.path;
+  console.log(req.body);
+  console.log(req);
 
   const {
     title,
@@ -9,13 +11,11 @@ const addOwnRecipe = async (body) => {
     area,
     instructions,
     description,
-    thumb,
-    preview,
     time,
     youtube,
     tags,
     ingredients,
-  } = body;
+  } = req.body;
 
   const newRecipe = Recipe.create({
     title,
@@ -23,8 +23,8 @@ const addOwnRecipe = async (body) => {
     area,
     instructions,
     description,
-    thumb,
-    preview,
+    thumb: imageURL,
+    preview: imageURL,
     time,
     youtube,
     tags,
