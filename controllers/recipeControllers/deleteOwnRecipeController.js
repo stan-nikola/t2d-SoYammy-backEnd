@@ -1,8 +1,10 @@
 const { deleteOwnRecipe } = require("../../services");
 
 const deleteOwnRecipeController = async (req, res, next) => {
-  const result = await deleteOwnRecipe(req.params);
-  res.json(result);
+  await deleteOwnRecipe(req);
+  res.json({
+    message: "recipe deleted",
+  });
 };
 
 module.exports = { deleteOwnRecipeController };

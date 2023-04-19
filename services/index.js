@@ -11,9 +11,7 @@ const {
 } = require("./ingredientServices/getRecipeByIngredients");
 const { addOwnRecipe } = require("./recipeServices/addOwnRecipe");
 const { deleteOwnRecipe } = require("./recipeServices/deleteOwnRecipe");
-
-
-
+const { getUserRecipes } = require("./recipeServices/getUserRecipies");
 
 module.exports = {
   registerUser,
@@ -22,6 +20,6 @@ module.exports = {
   getIngredientsList,
   getRecipeByIngredients,
   addOwnRecipe,
-    deleteOwnRecipe,
-
+  deleteOwnRecipe,
+  getUserRecipes,
 };
