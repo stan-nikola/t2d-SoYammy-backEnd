@@ -19,6 +19,13 @@ class LoginError extends SoYummyAppError {
   }
 }
 
+class NotAuthorizedError extends SoYummyAppError {
+  constructor(message) {
+    super(message);
+    this.status = 401;
+  }
+}
+
 class ValidationError extends SoYummyAppError {
   constructor(message) {
     super(message);
@@ -37,6 +44,7 @@ module.exports = {
   SoYummyAppError,
   RegistrationConflict,
   LoginError,
+  NotAuthorizedError,
   ValidationError,
   RequestError,
 };

@@ -1,3 +1,10 @@
+
 const { uploadRecipeImgCloud } = require("./upload/uploadMiddleware");
 
-module.exports = { uploadRecipeImgCloud };
+
+const { authMiddleware } = require("./auth/authMiddleware");
+
+module.exports = {
+  authMiddleware,uploadRecipeImgCloud
+};
+

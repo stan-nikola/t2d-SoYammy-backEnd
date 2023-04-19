@@ -9,6 +9,7 @@ const {
 } = require("./routes/api");
 
 const authRouter = require("./routes/api/auth");
+const userRouter = require("./routes/api/user");
 
 const { errorHandler } = require("./helpers");
 
@@ -21,7 +22,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/auth", authRouter);
-// app.use("/api/users", userRouter);
+app.use("/api/users", userRouter);
 
 // app.use("/api/ingredients", ingredientRouter);
 // app.use("/api/recipe", ingredientRouter);
