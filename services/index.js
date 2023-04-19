@@ -1,6 +1,12 @@
 const { registerUser } = require("./authService/registerUser");
 const { loginUser } = require("./authService/loginUser");
 // const { logoutUser } = require("./authService/logoutUser");
+const { getUserRecipes } = require("./recipeServices/getUserRecipes");
+const {
+  getRecipes,
+  getRecipesByCategory,
+  getRecipeById,
+} = require("./recipeServices");
 
 const {
   getIngredientsList,
@@ -11,7 +17,6 @@ const {
 } = require("./ingredientServices/getRecipeByIngredients");
 const { addOwnRecipe } = require("./recipeServices/addOwnRecipe");
 const { deleteOwnRecipe } = require("./recipeServices/deleteOwnRecipe");
-const { getUserRecipes } = require("./recipeServices/getUserRecipies");
 
 module.exports = {
   registerUser,
@@ -22,4 +27,7 @@ module.exports = {
   addOwnRecipe,
   deleteOwnRecipe,
   getUserRecipes,
+  getRecipes,
+  getRecipesByCategory,
+  getRecipeById,
 };

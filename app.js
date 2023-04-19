@@ -24,11 +24,8 @@ app.use(express.json());
 app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
 
-// app.use("/api/ingredients", ingredientRouter);
-// app.use("/api/recipe", ingredientRouter);
-
-app.use("/api", ingredientsRoute);
-app.use("/api", recipesRoute);
+app.use("/api/ingredients", ingredientsRoute);
+app.use("/api/recipes", recipesRoute);
 
 app.use("/api-docs", swaggerRoute);
 

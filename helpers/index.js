@@ -1,4 +1,5 @@
 const { asyncWrapper, errorHandler } = require("./apiHelpers");
+const categories = require("./categories");
 
 const {
   RegistrationConflict,
@@ -12,10 +13,13 @@ const {
 module.exports = {
   asyncWrapper,
   errorHandler,
+
   RegistrationConflict,
   LoginError,
   NotAuthorizedError,
   ValidationError,
   RequestError,
   NonExistingParamsError,
+
+  categories,
 };

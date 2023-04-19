@@ -1,4 +1,5 @@
 const { connectToDb } = require("./connection");
+
 const { Ingredient } = require("./ingredientModel");
 const { Recipe } = require("./recipeModel");
 

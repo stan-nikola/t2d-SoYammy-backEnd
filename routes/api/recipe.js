@@ -3,6 +3,10 @@ const { asyncWrapper } = require("../../helpers");
 const {
   addOwnRecipeController,
   deleteOwnRecipeController,
+  getCategoryListController,
+  getRecipesController,
+  getRecipesByCategoryController,
+  getRecipeByIdController,
 } = require("../../controllers");
 
 const { uploadRecipeImgCloud, authMiddleware } = require("../../middlewares");
@@ -29,5 +33,13 @@ router.get(
   authMiddleware,
   asyncWrapper(getUserRecipesController)
 );
+
+router.get("/category-list", asyncWrapper(getCategoryListController));
+
+router.get("/main-page", asyncWrapper(getRecipesController));
+
+router.get("/category/:category", asyncWrapper(getRecipesByCategoryController));
+
+router.get("/:id", asyncWrapper(getRecipeByIdController));
 
 module.exports = { recipesRoute: router };

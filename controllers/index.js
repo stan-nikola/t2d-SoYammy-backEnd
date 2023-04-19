@@ -27,6 +27,13 @@ const {
   deleteOwnRecipeController,
 } = require("./recipeControllers/deleteOwnRecipeController");
 
+const {
+  getCategoryListController,
+  getRecipesController,
+  getRecipesByCategoryController,
+  getRecipeByIdController,
+} = require("./recipeControllers");
+
 module.exports = {
   userRegistrationController,
   userLoginController,
@@ -36,4 +43,8 @@ module.exports = {
   getRecipeByIngredientsController,
   addOwnRecipeController,
   deleteOwnRecipeController,
+  getCategoryListController,
+  getRecipesController,
+  getRecipesByCategoryController,
+  getRecipeByIdController,
 };

@@ -1,35 +1,34 @@
-const { model, Schema, default: mongoose, SchemaTypes } = require("mongoose");
+const { model, Schema, default: mongoose } = require("mongoose");
 
-const recipeSchema = Schema(
+const { categories } = require("../helpers");
+
+const recipeSchema = new Schema(
   {
-    title: { type: String, required: [true, "Title required "] },
-    category: {
-      enum: [
-        "Beef",
-        "Breakfast",
-        "Chicken",
-        "Dessert",
-        "Goat",
-        "Lamb",
-        "Miscellaneous",
-        "Pasta",
-        "Pork",
-        "Seafood",
-        "Side",
-        "Starter",
-        "Vegan",
-      ],
+    title: {
       type: String,
-      required: [true, "category required "],
+      require: [true, "Title is required"],
     },
-    area: { type: String },
-    instructions: { type: String, required: [true, "instructions required "] },
-    description: { type: String },
+    category: {
+      type: String,
+      enum: [...categories],
+      require: [true, "Category is required"],
+    },
+    area: {
+      type: String,
+    },
+    instructions: {
+      type: String,
+      require: [true, "Instructions is required"],
+    },
+    description: {
+      type: String,
+      require: [true, "Description is required"],
+    },
     thumb: { type: String },
     preview: { type: String },
-    time: { type: Number, required: [true, "time required "] },
+    time: { type: String, require: [true, "Time is required"] },
     youtube: { type: String },
-    tags: { type: Array },
+    tags: { type: [String] },
     ingredients: [
       {
         id: {
@@ -43,14 +42,17 @@ const recipeSchema = Schema(
         _id: false,
       },
     ],
+    favorites: {
+      type: Array,
+      default: [],
+    },
     owner: {
-      type: SchemaTypes.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "user",
     },
   },
   { versionKey: false, timestamps: true }
 );
-
 const Recipe = model("recipe", recipeSchema);
 
 module.exports = { Recipe };
