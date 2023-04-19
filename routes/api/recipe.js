@@ -9,7 +9,7 @@ const {
   getRecipeByIdController,
 } = require("../../controllers");
 
-const { uploadRecipeImgCloud, authMiddleware } = require("../../middlewares");
+const { uploadCloud, authMiddleware } = require("../../middlewares");
 const {
   getUserRecipesController,
 } = require("../../controllers/recipeControllers/getUserRecipesController");
@@ -19,7 +19,7 @@ const router = express.Router();
 router.post(
   "/ownRecipes",
   authMiddleware,
-  uploadRecipeImgCloud.single("recipesImage"),
+  uploadCloud.single("recipesImage"),
   asyncWrapper(addOwnRecipeController)
 );
 

@@ -8,25 +8,26 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_SECRET,
 });
 
-const recipeImgStorage = new CloudinaryStorage({
+const storage = new CloudinaryStorage({
   cloudinary,
-  params: {
-    folder: (req, file) => {
-      if (file.fieldname === "recipesImage") {
-        return "soYummyT2D/recipes";
-      } else {
-        return "soYummyT2D/avatars";
-      }
-    },
-    allowedFormats: ["jpeg", "png", "jpg"],
-    // transformation: [{ width: 640, height: 480, crop:'fit'}],
+  params: (req, file) => {
+    if (file.fieldname === "recipesImage")
+      return { folder: "soYummyT2D/recipes" };
+
+    if (file.fieldname === "avatarImage")
+      return {
+        folder: "soYummyT2D/avatars",
+        transformation: [{ width: 240, height: 240, crop: "fit" }],
+      };
   },
+
+  allowedFormats: ["jpeg", "png", "jpg"],
 
   filename: (req, file, cb) => {
     cb(null, file.originalname);
   },
 });
 
-const uploadRecipeImgCloud = multer({ storage: recipeImgStorage });
+const uploadCloud = multer({ storage });
 
-module.exports = { uploadRecipeImgCloud };
+module.exports = { uploadCloud };
