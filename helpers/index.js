@@ -1,9 +1,19 @@
 const { asyncWrapper, errorHandler } = require("./apiHelpers");
 
-const { RequestError } = require("./errors");
+const {
+  RegistrationConflict,
+  LoginError,
+  NotAuthorizedError,
+  ValidationError,
+  RequestError,
+} = require("./errors");
 
 module.exports = {
   asyncWrapper,
   errorHandler,
+  RegistrationConflict,
+  LoginError,
+  NotAuthorizedError,
+  ValidationError,
   RequestError,
 };
