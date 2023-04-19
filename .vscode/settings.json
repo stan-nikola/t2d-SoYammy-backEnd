@@ -3,6 +3,7 @@
         "alphanum",
         "cloudinary",
         "examplepassword",
+        "fieldname",
         "SENDGRID",
         "tlds",
         "uuidv"

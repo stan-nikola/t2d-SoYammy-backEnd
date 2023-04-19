@@ -9,9 +9,19 @@ cloudinary.config({
 });
 
 const recipeImgStorage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  folder: "recipe",
-  allowedFormats: ["jpg", "png"],
+  cloudinary,
+  params: {
+    folder: (req, file) => {
+      if (file.fieldname === "recipesImage") {
+        return "soYummyT2D/recipes";
+      } else {
+        return "soYummyT2D/avatars";
+      }
+    },
+    allowedFormats: ["jpeg", "png", "jpg"],
+    // transformation: [{ width: 640, height: 480, crop:'fit'}],
+  },
+
   filename: (req, file, cb) => {
     cb(null, file.originalname);
   },
