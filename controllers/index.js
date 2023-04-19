@@ -7,9 +7,13 @@ const {
 const {
   addOwnRecipeController,
 } = require("./recipeControllers/addOwnRecipeController");
+const {
+  deleteOwnRecipeController,
+} = require("./recipeControllers/deleteOwnRecipeController");
 
 module.exports = {
   getIngredientsListController,
   getRecipeByIngredientsController,
   addOwnRecipeController,
+  deleteOwnRecipeController,
 };

@@ -2,8 +2,6 @@ const { model, Schema, default: mongoose, SchemaTypes } = require("mongoose");
 
 const recipeSchema = Schema(
   {
-    //
-
     title: { type: String, required: [true, "Title required "] },
     category: {
       enum: [

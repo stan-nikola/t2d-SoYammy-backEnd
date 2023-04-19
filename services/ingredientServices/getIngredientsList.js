@@ -3,6 +3,7 @@ const { Ingredient } = require("../../models");
 // const ObjectId = require("mongodb").ObjectId;
 
 const getIngredientsList = async () => {
+  // console.log(id);
   // const qwe = await Recipe.aggregate([
   //   { $match: { _id: new ObjectId(id) } },
   //   {
