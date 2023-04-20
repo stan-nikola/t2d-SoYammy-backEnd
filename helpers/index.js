@@ -8,6 +8,7 @@ const {
   ValidationError,
   RequestError,
   NonExistingParamsError,
+  ParamsAddConflictError,
 } = require("./errors");
 
 const { createEmailBody } = require("../helpers/createEmailBody");
@@ -26,6 +27,6 @@ module.exports = {
   ValidationError,
   RequestError,
   NonExistingParamsError,
-
+  ParamsAddConflictError,
   categories,
 };

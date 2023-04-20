@@ -13,10 +13,13 @@ const userRouter = require("./routes/api/user");
 const subscribeRouter = require("./routes/api/subscribe");
 
 const { errorHandler } = require("./helpers");
+const { userRecipesRoute } = require("./routes/api/");
 
 const app = express();
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
+
+app.use(express.static("tmp"));
 
 app.use(logger(formatsLogger));
 app.use(cors());
@@ -28,6 +31,7 @@ app.use("/api/", subscribeRouter);
 
 app.use("/api/ingredients", ingredientsRoute);
 app.use("/api/recipes", recipesRoute);
+app.use("/api/ownrecipes", userRecipesRoute);
 
 app.use("/api-docs", swaggerRoute);
 

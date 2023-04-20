@@ -13,6 +13,9 @@ const {
   getRecipesByCategory,
   getRecipeById,
   getRecipesBySearchQuery,
+  addToFavoriteRecipe,
+  getUserFavoriteRecipes,
+  deleteFromFavoriteRecipe,
 } = require("./recipeServices");
 
 const {
@@ -42,4 +45,7 @@ module.exports = {
   getRecipesByCategory,
   getRecipeById,
   getRecipesBySearchQuery,
+  addToFavoriteRecipe,
+  getUserFavoriteRecipes,
+  deleteFromFavoriteRecipe,
 };
