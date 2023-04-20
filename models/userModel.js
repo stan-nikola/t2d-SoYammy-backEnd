@@ -26,6 +26,11 @@ const userSchema = new Schema({
     default: false,
   },
 
+  shoppingList: {
+    type: Array,
+    default: [],
+  },
+
   token: {
     type: String,
     default: null,
