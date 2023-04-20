@@ -5,6 +5,10 @@ const {
 } = require("./getRecipesByCategoryController");
 const { getRecipeByIdController } = require("./getRecipeByIdController");
 const {
+  getRecipesBySearchQueryController,
+} = require("./getRecipesBySearchQueryController");
+
+const {
   addToFavoriteRecipeController,
 } = require("./addToFavoriteRecipeController");
 
@@ -21,6 +25,7 @@ module.exports = {
   getRecipesController,
   getRecipesByCategoryController,
   getRecipeByIdController,
+  getRecipesBySearchQueryController,
   addToFavoriteRecipeController,
   getUserFavoriteRecipesController,
   getUserRecipesController,
