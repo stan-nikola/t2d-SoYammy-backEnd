@@ -13,6 +13,7 @@ const userRouter = require("./routes/api/user");
 const subscribeRouter = require("./routes/api/subscribe");
 
 const { errorHandler } = require("./helpers");
+const { userRecipesRoute } = require("./routes/api/");
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use("/api/", subscribeRouter);
 
 app.use("/api/ingredients", ingredientsRoute);
 app.use("/api/recipes", recipesRoute);
+app.use("/api/ownrecipes", userRecipesRoute);
 
 app.use("/api-docs", swaggerRoute);
 
