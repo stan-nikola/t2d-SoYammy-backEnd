@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
 
-const { RequestError, ParamsAddConflictError } = require("../../helpers");
+const { RequestError } = require("../../helpers");
 const { Recipe } = require("../../models");
+const { ParamsConflictError } = require("../../helpers/errors");
 
 const addToFavoriteRecipe = async (req) => {
   const { recipeId } = req.params;
@@ -18,7 +19,7 @@ const addToFavoriteRecipe = async (req) => {
   );
 
   if (isInFavorites) {
-    throw new ParamsAddConflictError("Recipe already added to favorites");
+    throw new ParamsConflictError("Recipe already added to favorites");
   }
 
   return Recipe.findByIdAndUpdate(

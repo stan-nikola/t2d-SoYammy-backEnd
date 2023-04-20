@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
 
-const { RequestError, ParamsAddConflictError } = require("../../helpers");
+const { RequestError } = require("../../helpers");
 const { Recipe } = require("../../models");
+const { ParamsConflictError } = require("../../helpers/errors");
 
 const deleteFromFavoriteRecipe = async (req) => {
   const { recipeId } = req.params;
@@ -17,9 +18,11 @@ const deleteFromFavoriteRecipe = async (req) => {
     (favorite) => favorite.userId === userId
   );
 
-  if (isInFavorites) {
-    throw new ParamsAddConflictError("Recipe already added to favorites");
+  if (!isInFavorites) {
+    throw new ParamsConflictError("Recipe not in favorites");
   }
+
+  return Recipe.update({ _id: recipeId }, { $pull: { favorites: { userId } } });
 };
 
 module.exports = { deleteFromFavoriteRecipe };

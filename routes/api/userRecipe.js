@@ -26,7 +26,7 @@ router.delete(
   authMiddleware,
   asyncWrapper(deleteOwnRecipeController)
 );
-router.patch(
+router.put(
   "/favorite/:recipeId",
   authMiddleware,
   asyncWrapper(addToFavoriteRecipeController)
@@ -37,7 +37,7 @@ router.get(
   asyncWrapper(getUserFavoriteRecipesController)
 );
 router.patch(
-  "/favorite",
+  "/favorite/:recipeId",
   authMiddleware,
   asyncWrapper(deleteFromFavoriteRecipeController)
 );
