@@ -15,6 +15,18 @@ const {
 } = require("./userControllers/getCurrentUserController");
 
 const {
+  changeUserAvatarController,
+} = require("./userControllers/changeUserAvatarController");
+
+const {
+  changeUserNameController,
+} = require("./userControllers/changeUserNameController");
+
+const {
+  newsSubscribeController,
+} = require("./SubscribeController/newsSubscribeController");
+
+const {
   getIngredientsListController,
 } = require("./ingredientControllers/getIngredientsListController");
 const {
@@ -44,6 +56,9 @@ module.exports = {
   userLoginController,
   userLogoutController,
   getCurrentUserController,
+  changeUserAvatarController,
+  changeUserNameController,
+  newsSubscribeController,
   getIngredientsListController,
   getRecipeByIngredientsController,
   addOwnRecipeController,
