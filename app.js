@@ -10,6 +10,7 @@ const {
 
 const authRouter = require("./routes/api/auth");
 const userRouter = require("./routes/api/user");
+const subscribeRouter = require("./routes/api/subscribe");
 
 const { errorHandler } = require("./helpers");
 
@@ -23,6 +24,7 @@ app.use(express.json());
 
 app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
+app.use("/api/", subscribeRouter);
 
 app.use("/api/ingredients", ingredientsRoute);
 app.use("/api/recipes", recipesRoute);

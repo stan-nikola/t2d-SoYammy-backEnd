@@ -10,9 +10,15 @@ const {
   NonExistingParamsError,
 } = require("./errors");
 
+const { createEmailBody } = require("../helpers/createEmailBody");
+const { sendEmail } = require("../helpers/sendEmail");
+
 module.exports = {
   asyncWrapper,
   errorHandler,
+
+  createEmailBody,
+  sendEmail,
 
   RegistrationConflict,
   LoginError,
