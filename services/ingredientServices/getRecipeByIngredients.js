@@ -2,7 +2,11 @@ const { Recipe } = require("../../models/recipeModel");
 
 const { Ingredient } = require("../../models");
 
-const getRecipeByIngredients = async ({ ingredient }) => {
+const getRecipeByIngredients = async (req) => {
+  const { query } = req.query;
+
+  const ingredient = query.toString();
+
   const finnedIngredient = await Ingredient.find({
     ttl: { $regex: ingredient, $options: "i" },
   });
@@ -11,13 +15,9 @@ const getRecipeByIngredients = async ({ ingredient }) => {
 
   finnedIngredient.map((item) => ingredientsArr.push(item.id));
 
-  const recipes = await Recipe.find({
+  return await Recipe.find({
     "ingredients.id": { $in: ingredientsArr },
   });
-
-  // console.log(ingredientsArr);
-
-  return recipes;
 };
 
 module.exports = { getRecipeByIngredients };

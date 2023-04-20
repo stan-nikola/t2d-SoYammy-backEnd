@@ -8,6 +8,7 @@ const {
   ValidationError,
   RequestError,
   NonExistingParamsError,
+  ParamsAddConflictError,
 } = require("./errors");
 
 module.exports = {
@@ -20,6 +21,6 @@ module.exports = {
   ValidationError,
   RequestError,
   NonExistingParamsError,
-
+  ParamsAddConflictError,
   categories,
 };

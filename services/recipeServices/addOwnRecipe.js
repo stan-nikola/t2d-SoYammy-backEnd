@@ -15,7 +15,7 @@ const addOwnRecipe = async (req) => {
     ingredients,
   } = req.body;
 
-  const newRecipe = Recipe.create({
+  const newRecipe = await Recipe.create({
     title,
     category,
     area,

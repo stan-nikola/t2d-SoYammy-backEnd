@@ -12,6 +12,7 @@ const authRouter = require("./routes/api/auth");
 const userRouter = require("./routes/api/user");
 
 const { errorHandler } = require("./helpers");
+const { userRecipesRoute } = require("./routes/api/");
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use("/api/users", userRouter);
 
 app.use("/api/ingredients", ingredientsRoute);
 app.use("/api/recipes", recipesRoute);
+app.use("/api/ownrecipes", userRecipesRoute);
 
 app.use("/api-docs", swaggerRoute);
 
