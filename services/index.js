@@ -1,6 +1,12 @@
 const { registerUser } = require("./authService/registerUser");
 const { loginUser } = require("./authService/loginUser");
 // const { logoutUser } = require("./authService/logoutUser");
+const { changeUserAvatar } = require("./userService/changeUserAvatar");
+const { changeUserName } = require("./userService/changeUserName");
+const {
+  subscribeToNewsletter,
+} = require("./SubscribeService/subscribeToNewsletter");
+// const { getCurrentUser } = require("./userService/getCurrentUser");
 const { getUserRecipes } = require("./recipeServices/getUserRecipes");
 const {
   getRecipes,
@@ -22,6 +28,10 @@ module.exports = {
   registerUser,
   loginUser,
   // logoutUser,
+  // getCurrentUser,
+  changeUserAvatar,
+  changeUserName,
+  subscribeToNewsletter,
   getIngredientsList,
   getRecipeByIngredients,
   addOwnRecipe,

@@ -15,6 +15,16 @@ const userSchema = new Schema({
     required: [true, "Password is required"],
   },
 
+  avatarUrl: {
+    type: String,
+    default: null,
+  },
+
+  subscription: {
+    type: Boolean,
+    default: false,
+  },
+
   token: {
     type: String,
     default: null,

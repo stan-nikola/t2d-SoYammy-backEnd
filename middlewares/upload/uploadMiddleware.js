@@ -21,7 +21,7 @@ const storage = new CloudinaryStorage({
       };
   },
 
-  allowedFormats: ["jpeg", "png", "jpg"],
+  allowedFormats: ["jpeg", "png", "jpg", "gif", "svg"],
 
   filename: (req, file, cb) => {
     cb(null, file.originalname);
