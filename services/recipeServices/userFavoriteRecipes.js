@@ -14,6 +14,31 @@ const getUserFavoriteRecipes = async (req) => {
         as: "ingredientsData",
       },
     },
+    {
+      $set: {
+        ingredients: {
+          $map: {
+            input: "$ingredients",
+            in: {
+              $mergeObjects: [
+                "$$this",
+                {
+                  $arrayElemAt: [
+                    "$ingredientsData",
+                    {
+                      $indexOfArray: ["$ingredientsData._id", "$$this.id"],
+                    },
+                  ],
+                },
+              ],
+            },
+          },
+        },
+      },
+    },
+    {
+      $unset: ["ingredientsData", "ingredients.id"],
+    },
   ]);
 
   return userFavoriteRecipes;
