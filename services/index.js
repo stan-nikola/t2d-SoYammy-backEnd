@@ -12,6 +12,7 @@ const {
   getRecipes,
   getRecipesByCategory,
   getRecipeById,
+  getRecipesBySearchQuery,
 } = require("./recipeServices");
 
 const {
@@ -40,4 +41,5 @@ module.exports = {
   getRecipes,
   getRecipesByCategory,
   getRecipeById,
+  getRecipesBySearchQuery,
 };

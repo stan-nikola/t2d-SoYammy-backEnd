@@ -44,6 +44,7 @@ const {
   getRecipesController,
   getRecipesByCategoryController,
   getRecipeByIdController,
+  getRecipesBySearchQueryController,
 } = require("./recipeControllers");
 
 module.exports = {
@@ -62,4 +63,5 @@ module.exports = {
   getRecipesController,
   getRecipesByCategoryController,
   getRecipeByIdController,
+  getRecipesBySearchQueryController,
 };
