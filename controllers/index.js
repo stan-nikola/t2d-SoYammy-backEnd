@@ -23,6 +23,10 @@ const {
 } = require("./userControllers/changeUserNameController");
 
 const {
+  changeUserDataController,
+} = require("./userControllers/changeUserDataController");
+
+const {
   newsSubscribeController,
 } = require("./SubscribeController/newsSubscribeController");
 
@@ -47,12 +51,10 @@ const {
 
   getRecipesBySearchQueryController,
 
-
   getUserFavoriteRecipesController,
   getUserRecipesController,
   addToFavoriteRecipeController,
   deleteFromFavoriteRecipeController,
-
 } = require("./recipeControllers");
 
 module.exports = {
@@ -62,6 +64,7 @@ module.exports = {
   getCurrentUserController,
   changeUserAvatarController,
   changeUserNameController,
+  changeUserDataController,
   newsSubscribeController,
   getIngredientsListController,
   getRecipeByIngredientsController,
@@ -78,5 +81,4 @@ module.exports = {
   getUserFavoriteRecipesController,
   getUserRecipesController,
   deleteFromFavoriteRecipeController,
-
 };

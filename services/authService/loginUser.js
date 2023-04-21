@@ -10,7 +10,6 @@ const loginUser = async (requestBody) => {
   const { email, password } = requestBody;
 
   const user = await User.findOne({ email });
-
   if (!user || !bcrypt.compareSync(password, user.password)) {
     throw new LoginError("Login error. Email or password is wrong");
   }
