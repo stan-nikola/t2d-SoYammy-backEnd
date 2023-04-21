@@ -3,6 +3,8 @@ const { loginUser } = require("./authService/loginUser");
 // const { logoutUser } = require("./authService/logoutUser");
 const { changeUserAvatar } = require("./userService/changeUserAvatar");
 const { changeUserName } = require("./userService/changeUserName");
+const { changeUserData } = require("./userService/changeUserData");
+
 const {
   subscribeToNewsletter,
 } = require("./SubscribeService/subscribeToNewsletter");
@@ -35,6 +37,7 @@ module.exports = {
   // getCurrentUser,
   changeUserAvatar,
   changeUserName,
+  changeUserData,
   subscribeToNewsletter,
   getIngredientsList,
   getRecipeByIngredients,
