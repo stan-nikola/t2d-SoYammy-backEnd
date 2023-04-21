@@ -6,6 +6,7 @@ const {
   swaggerRoute,
   ingredientsRoute,
   recipesRoute,
+  shoppingListRouter,
 } = require("./routes/api");
 
 const authRouter = require("./routes/api/auth");
@@ -32,6 +33,8 @@ app.use("/api/", subscribeRouter);
 app.use("/api/ingredients", ingredientsRoute);
 app.use("/api/recipes", recipesRoute);
 app.use("/api/ownrecipes", userRecipesRoute);
+
+app.use("/api/shoppinglist", shoppingListRouter);
 
 app.use("/api-docs", swaggerRoute);
 

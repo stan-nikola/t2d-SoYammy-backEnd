@@ -6,7 +6,13 @@ const { subscribe } = require("./subscribe");
 const { swaggerRoute } = require("./swagger");
 const { userRecipesRoute } = require("./userRecipe");
 
+const { shoppingListRouter } = require("./shoppingList");
 
-
-module.exports = { swaggerRoute, ingredientsRoute, subscribe, recipesRoute, userRecipesRoute, };
-
+module.exports = {
+  swaggerRoute,
+  ingredientsRoute,
+  subscribe,
+  recipesRoute,
+  userRecipesRoute,
+  shoppingListRouter,
+};

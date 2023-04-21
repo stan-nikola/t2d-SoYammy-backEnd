@@ -44,7 +44,7 @@ const getRecipeById = async (id) => {
     },
   ]);
 
-  return result;
+  return result[0];
 };
 
 module.exports = { getRecipeById };

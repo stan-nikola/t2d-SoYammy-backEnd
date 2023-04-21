@@ -57,6 +57,11 @@ const {
   deleteFromFavoriteRecipeController,
 } = require("./recipeControllers");
 
+const {
+  getShoppingListController,
+  addProductToListController,
+} = require("./shoppingListControllers");
+
 module.exports = {
   userRegistrationController,
   userLoginController,
@@ -81,4 +86,7 @@ module.exports = {
   getUserFavoriteRecipesController,
   getUserRecipesController,
   deleteFromFavoriteRecipeController,
+
+  getShoppingListController,
+  addProductToListController,
 };
