@@ -4,12 +4,14 @@ const userRegistrationController = async (req, res) => {
   const result = await registerUser(req.body);
   const { name, email, avatarUrl, token, subscription, shoppingList } = result;
   return res.status(201).json({
-    name,
-    email,
+    user: {
+      name,
+      email,
+      avatarUrl,
+      subscription,
+      shoppingList,
+    },
     token,
-    avatarUrl,
-    subscription,
-    shoppingList,
   });
 };
 
