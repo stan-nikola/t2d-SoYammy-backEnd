@@ -27,6 +27,7 @@ const storage = new CloudinaryStorage({
     cb(null, file.originalname);
   },
 });
+// const x = console.log("Contant length =");
 
 const uploadCloud = multer({ storage });
 

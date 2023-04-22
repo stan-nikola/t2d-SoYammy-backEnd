@@ -26,6 +26,13 @@ class NotAuthorizedError extends SoYummyAppError {
   }
 }
 
+class FileSizeError extends SoYummyAppError {
+  constructor(message) {
+    super(message);
+    this.status = 401;
+  }
+}
+
 class ValidationError extends SoYummyAppError {
   constructor(message) {
     super(message);
@@ -59,6 +66,7 @@ module.exports = {
   RegistrationConflict,
   LoginError,
   NotAuthorizedError,
+  FileSizeError,
   ValidationError,
   RequestError,
   NonExistingParamsError,
