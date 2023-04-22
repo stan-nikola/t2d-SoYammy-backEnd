@@ -60,6 +60,7 @@ const {
 const {
   getShoppingListController,
   addProductToListController,
+  removeProductFromListController,
 } = require("./shoppingListControllers");
 
 module.exports = {
@@ -89,4 +90,5 @@ module.exports = {
 
   getShoppingListController,
   addProductToListController,
+  removeProductFromListController,
 };

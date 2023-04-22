@@ -30,7 +30,11 @@ const {
 const { addOwnRecipe } = require("./recipeServices/addOwnRecipe");
 const { deleteOwnRecipe } = require("./recipeServices/deleteOwnRecipe");
 
-const { getShoppingList, addProductToList } = require("./shoppingListService");
+const {
+  getShoppingList,
+  addProductToList,
+  removeProductFromList,
+} = require("./shoppingListService");
 
 module.exports = {
   registerUser,
@@ -55,4 +59,5 @@ module.exports = {
   deleteFromFavoriteRecipe,
   getShoppingList,
   addProductToList,
+  removeProductFromList,
 };
