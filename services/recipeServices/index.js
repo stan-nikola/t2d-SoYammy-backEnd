@@ -5,6 +5,8 @@ const {getRecipesBySearchQuery} =require("./getRecipesBySearchQuery")
 const { addToFavoriteRecipe } = require("./addToFavoriteRecipe");
 const { getUserFavoriteRecipes } = require("./userFavoriteRecipes");
 const { deleteFromFavoriteRecipe } = require("./deleteFromFavoriteRecipe");
+const { popularRecipes } = require("./popularRecipes");
+
 
 module.exports = {
   getRecipes,
@@ -14,4 +16,5 @@ module.exports = {
   addToFavoriteRecipe,
   getUserFavoriteRecipes,
   deleteFromFavoriteRecipe,
+  popularRecipes,
 };

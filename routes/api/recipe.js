@@ -6,6 +6,7 @@ const {
   getRecipesByCategoryController,
   getRecipeByIdController,
   getRecipesBySearchQueryController,
+  popularRecipesController,
 } = require("../../controllers");
 
 const router = express.Router();
@@ -17,6 +18,7 @@ router.get("/main-page", asyncWrapper(getRecipesController));
 router.get("/category/:category", asyncWrapper(getRecipesByCategoryController));
 
 router.get("/search", asyncWrapper(getRecipesBySearchQueryController));
+router.get("/popular-recipe", asyncWrapper(popularRecipesController));
 
 router.get("/:id", asyncWrapper(getRecipeByIdController));
 

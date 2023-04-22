@@ -18,6 +18,7 @@ const {
   addToFavoriteRecipe,
   getUserFavoriteRecipes,
   deleteFromFavoriteRecipe,
+  popularRecipes,
 } = require("./recipeServices");
 
 const {
@@ -60,4 +61,5 @@ module.exports = {
   getShoppingList,
   addProductToList,
   removeProductFromList,
+  popularRecipes,
 };
