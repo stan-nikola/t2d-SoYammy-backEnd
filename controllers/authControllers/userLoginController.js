@@ -6,12 +6,14 @@ const userLoginController = async (req, res) => {
   // console.log("token=", token);
   // console.log("result=", result);
   return res.status(200).json({
-    name,
-    email,
-    token: token,
-    avatarUrl,
-    subscription,
-    shoppingList,
+    user: {
+      name,
+      email,
+      avatarUrl,
+      subscription,
+      shoppingList,
+    },
+    token,
   });
 };
 
