@@ -1,4 +1,5 @@
 const { Recipe } = require("../../models");
+const { RequestError } = require("../../helpers");
 
 const ObjectId = require("mongodb").ObjectId;
 
@@ -44,7 +45,11 @@ const getRecipeById = async (id) => {
     },
   ]);
 
-  return result;
+  if (!result.length) {
+    throw new RequestError(`Recipe with id: ${id} not found`);
+  }
+
+  return result[0];
 };
 
 module.exports = { getRecipeById };
