@@ -1,7 +1,11 @@
 const express = require("express");
 
 const { asyncWrapper } = require("../../helpers");
-const { uploadCloud, authMiddleware } = require("../../middlewares");
+const {
+  uploadCloud,
+  authMiddleware,
+  validationMiddleware,
+} = require("../../middlewares");
 const {
   addOwnRecipeController,
   deleteOwnRecipeController,
@@ -10,6 +14,7 @@ const {
   getUserFavoriteRecipesController,
   deleteFromFavoriteRecipeController,
 } = require("../../controllers");
+const { joiRecipeSchema } = require("../../models/recipeModel");
 
 const router = express.Router();
 
@@ -17,6 +22,7 @@ router.post(
   "/",
   authMiddleware,
   uploadCloud.single("recipesImage"),
+  validationMiddleware(joiRecipeSchema),
   asyncWrapper(addOwnRecipeController)
 );
 
