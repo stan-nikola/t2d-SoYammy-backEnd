@@ -12,7 +12,9 @@ const getRecipesByCategory = async (category, skip, limit) => {
     .skip(skip)
     .limit(limit);
 
-  return result;
+  const totalNumber = await Recipe.find({ category }, "").countDocuments();
+
+  return { result, totalNumber };
 };
 
 module.exports = { getRecipesByCategory };
