@@ -1,6 +1,25 @@
 const { model, Schema, default: mongoose } = require("mongoose");
 
 const { categories } = require("../helpers");
+const Joi = require("joi");
+
+const joiRecipeSchema = Joi.object({
+  title: Joi.string().min(3).max(20).required(),
+  category: Joi.string()
+    .valid(...categories)
+    .required(),
+  area: Joi.string(),
+  instructions: Joi.string().min(3).max(3000).required(),
+  description: Joi.string().min(3).max(3000).required(),
+  time: Joi.string().min(1).max(5).required(),
+  tags: Joi.array().items(Joi.string()),
+  ingredients: Joi.array().items(
+    Joi.object().keys({
+      id: Joi.string(),
+      measure: Joi.string().min(3).max(30).required(),
+    })
+  ),
+}).options({ abortEarly: true });
 
 const recipeSchema = new Schema(
   {
@@ -55,4 +74,4 @@ const recipeSchema = new Schema(
 );
 const Recipe = model("recipe", recipeSchema);
 
-module.exports = { Recipe };
+module.exports = { Recipe, joiRecipeSchema };

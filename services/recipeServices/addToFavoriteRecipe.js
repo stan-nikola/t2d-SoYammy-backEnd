@@ -19,7 +19,9 @@ const addToFavoriteRecipe = async (req) => {
   );
 
   if (isInFavorites) {
-    throw new ParamsConflictError("Recipe already added to favorites");
+    throw new ParamsConflictError(
+      `Recipe id:${recipeId} already added to favorites`
+    );
   }
 
   return Recipe.findByIdAndUpdate(

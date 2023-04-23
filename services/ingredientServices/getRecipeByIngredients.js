@@ -1,23 +1,50 @@
 const { Recipe } = require("../../models/recipeModel");
 
-const { Ingredient } = require("../../models");
-
 const getRecipeByIngredients = async (req) => {
   const { query } = req.query;
 
   const ingredient = query.toString();
 
-  const finnedIngredient = await Ingredient.find({
-    ttl: { $regex: ingredient, $options: "i" },
-  });
-
-  const ingredientsArr = [];
-
-  finnedIngredient.map((item) => ingredientsArr.push(item.id));
-
-  return await Recipe.find({
-    "ingredients.id": { $in: ingredientsArr },
-  });
+  return await Recipe.aggregate([
+    {
+      $lookup: {
+        from: "ingredients",
+        localField: "ingredients.id",
+        foreignField: "_id",
+        as: "ingredientsData",
+      },
+    },
+    {
+      $set: {
+        ingredients: {
+          $map: {
+            input: "$ingredients",
+            in: {
+              $mergeObjects: [
+                "$$this",
+                {
+                  $arrayElemAt: [
+                    "$ingredientsData",
+                    {
+                      $indexOfArray: ["$ingredientsData._id", "$$this.id"],
+                    },
+                  ],
+                },
+              ],
+            },
+          },
+        },
+      },
+    },
+    {
+      $match: {
+        "ingredients.ttl": { $regex: ingredient, $options: "i" },
+      },
+    },
+    {
+      $unset: ["ingredientsData", "ingredients.id"],
+    },
+  ]);
 };
 
 module.exports = { getRecipeByIngredients };
