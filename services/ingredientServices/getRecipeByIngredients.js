@@ -1,3 +1,4 @@
+const { RequestError } = require("../../helpers");
 const { Recipe } = require("../../models/recipeModel");
 
 const getRecipeByIngredients = async (req) => {
@@ -5,7 +6,7 @@ const getRecipeByIngredients = async (req) => {
 
   const ingredient = query.toString();
 
-  return await Recipe.aggregate([
+  const finnedRecipes = await Recipe.aggregate([
     {
       $lookup: {
         from: "ingredients",
@@ -45,6 +46,12 @@ const getRecipeByIngredients = async (req) => {
       $unset: ["ingredientsData", "ingredients.id"],
     },
   ]);
+  if (finnedRecipes.length <= 0)
+    throw new RequestError(
+      `Recipe with ${ingredient} not found, try find with another ingredient`
+    );
+
+  return finnedRecipes;
 };
 
 module.exports = { getRecipeByIngredients };
