@@ -11,12 +11,10 @@
   },
   "servers": [
     {
-      "url": "https://t2d-soyammy-backend.onrender.com/api"
+      "url": "http://localhost:3000/api"
     }
   ],
 
-  "consumers": ["application/json", "multipart/form-data"],
-  "produces": ["application/json", "multipart/form-data"],
   "tags": [
     {
       "name": "auth",
@@ -65,7 +63,7 @@
         },
         "security": [
           {
-            "api_key": []
+            "bearerAuth": []
           }
         ]
       }
@@ -138,94 +136,152 @@
         "description": "",
         "consumes": ["multipart/form-data"],
 
-        "parameters": [
-          {
-            "name": "recipeImage",
-            "in": "formData",
-            "description": "Recipe image",
-            "schema": { "type": "file" }
-          },
-          {
-            "name": "title",
-            "in": "formData",
-            "description": "Recipe title",
-            "required": true,
-            "type": "string",
-            "example": "Fried eggplant"
-          },
-          {
-            "name": "category",
-            "in": "formData",
-            "description": "Recipe category",
-            "required": true,
-            "type": "string",
-            "example": "Starter"
-          },
-          {
-            "name": "area",
-            "in": "formData",
-            "description": "Recipe area",
-            "required": true,
-            "type": "string",
-            "example": "Ukraine"
-          },
-          {
-            "name": "instructions",
-            "in": "formData",
-            "description": "Recipe instructions",
-            "required": true,
-            "type": "string",
-            "example": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"
-          },
-          {
-            "name": "description",
-            "in": "formData",
-            "description": "Recipe area",
-            "required": true,
-            "type": "string",
-            "example": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
-          },
-          {
-            "name": "time",
-            "in": "formData",
-            "description": "Recipe preparing time",
-            "required": true,
-            "type": "string",
-            "example": "30"
-          },
-          {
-            "name": "tags",
-            "in": "formData",
-            "description": "Recipe tags",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "example": "pasta,baking"
-              }
-            }
-          },
-          {
-            "name": "ingredients",
-            "in": "formData",
-            "description": "Recipe ingredients",
-            "required": true,
-            "schema": {
-              "type": "array",
-              "items": {
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
                 "type": "object",
-                "example": {
-                  "id": "640c2dd963a319ea671e376c",
-                  "measure": "3/4 cup"
+                "required": "[title,category,instructions,time,description,ingredients]",
+                "properties": {
+                  "recipeImage": {
+                    "type": "file",
+                    "description": "Recipe image"
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "Recipe title",
+                    "example": "Fried eggplant"
+                  },
+                  "category": {
+                    "type": "string",
+                    "description": "Recipe category",
+                    "example": "Starter"
+                  },
+                  "area": {
+                    "type": "string",
+                    "description": "Recipe area",
+                    "example": "Ukraine"
+                  },
+                  "instructions": {
+                    "type": "string",
+                    "description": "Recipe instructions",
+                    "example": "Lorem ipsum dolor sit amet"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Recipe description",
+                    "example": "Lorem ipsum dolor sit amet"
+                  },
+                  "time": {
+                    "type": "string",
+                    "description": "Recipe preparing time ",
+                    "example": "30"
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "example": "baking"
+                    }
+                  },
+                  "ingredients": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "example": {
+                        "id": "640c2dd963a319ea671e376c",
+                        "measure": "3/4 cup"
+                      }
+                    },
+                    "description": "Recipe ingredients"
+                  }
                 }
               }
             }
           }
-        ],
+        },
 
         "responses": {
-          "405": {
-            "description": "Invalid input"
+          "200": {
+            "description": "new recipe object"
+          },
+          "401": {
+            "description": "message: Not authorized"
+          },
+          "400": {
+            "description": "message: fields validation error"
+          }
+        }
+      },
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": ["ownrecipes"],
+        "summary": "Get own recipe",
+        "description": "\n\n\nExtras:\n- Example: ownRecipes/?page=1&limit=6 \n- added the totalCount field to each object, which shows the total number of objects in the collection upon request",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Returns 4 objects per page",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Page limit",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "array of own recipes"
+          },
+          "401": {
+            "description": "message: Not authorized"
+          }
+        }
+      }
+    },
+    "/ownrecipes/{recipeId}": {
+      "delete": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": ["ownrecipes"],
+        "summary": "Delete own recipe",
+        "description": "",
+        "parameters": [
+          {
+            "name": "recipeId",
+            "in": "path",
+            "description": "ID of the recipe that needs to be deleted",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "recipe deleted"
+          },
+          "401": {
+            "description": "message: Not authorized"
+          },
+          "400": {
+            "description": "Recipe with id: <recipeId> not found"
           }
         }
       }
