@@ -3,8 +3,6 @@ const { Recipe } = require("../../models");
 const addOwnRecipe = async (req) => {
   const imageURL = req.file.path;
 
-  console.log("add", req.body);
-
   const {
     title,
     category,
@@ -16,6 +14,8 @@ const addOwnRecipe = async (req) => {
     tags,
     ingredients,
   } = req.body;
+
+  console.log(ingredients);
 
   const newRecipe = await Recipe.create({
     title,

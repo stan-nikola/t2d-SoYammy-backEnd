@@ -14,6 +14,7 @@
       "url": "https://t2d-soyammy-backend.onrender.com/api"
     }
   ],
+
   "consumers": ["application/json", "multipart/form-data"],
   "produces": ["application/json", "multipart/form-data"],
   "tags": [
@@ -27,7 +28,11 @@
     },
 
     {
-      "name": "recipe",
+      "name": "recipes",
+      "description": "Access to recipe"
+    },
+    {
+      "name": "ownrecipes",
       "description": "Access to recipe"
     },
     {
@@ -69,13 +74,31 @@
       "get": {
         "tags": ["ingredient"],
         "summary": "Get recipe by ingredient name ",
-        "description": "Example: /ingredients?query=cucumber",
+        "description": "\n\n\nExtras:\n- Example: ingredients?query=cucumber&page=1&limit=3 \n- added the totalCount field to each object, which shows the total number of objects in the collection upon request",
 
         "parameters": [
           {
             "name": "query",
             "in": "query",
             "description": "The ingredient name for search",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Returns 12 objects per page",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Page limit max 12 objects",
             "required": false,
             "schema": {
               "type": "string"
@@ -99,6 +122,110 @@
           },
           "400": {
             "description": "Recipe with {query} not found, try find with another ingredient"
+          }
+        }
+      }
+    },
+    "/ownrecipes": {
+      "post": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": ["ownrecipes"],
+        "summary": "Add own recipe",
+        "description": "",
+        "consumes": ["multipart/form-data"],
+
+        "parameters": [
+          {
+            "name": "recipeImage",
+            "in": "formData",
+            "description": "Recipe image",
+            "schema": { "type": "file" }
+          },
+          {
+            "name": "title",
+            "in": "formData",
+            "description": "Recipe title",
+            "required": true,
+            "type": "string",
+            "example": "Fried eggplant"
+          },
+          {
+            "name": "category",
+            "in": "formData",
+            "description": "Recipe category",
+            "required": true,
+            "type": "string",
+            "example": "Starter"
+          },
+          {
+            "name": "area",
+            "in": "formData",
+            "description": "Recipe area",
+            "required": true,
+            "type": "string",
+            "example": "Ukraine"
+          },
+          {
+            "name": "instructions",
+            "in": "formData",
+            "description": "Recipe instructions",
+            "required": true,
+            "type": "string",
+            "example": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"
+          },
+          {
+            "name": "description",
+            "in": "formData",
+            "description": "Recipe area",
+            "required": true,
+            "type": "string",
+            "example": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
+          },
+          {
+            "name": "time",
+            "in": "formData",
+            "description": "Recipe preparing time",
+            "required": true,
+            "type": "string",
+            "example": "30"
+          },
+          {
+            "name": "tags",
+            "in": "formData",
+            "description": "Recipe tags",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "example": "pasta,baking"
+              }
+            }
+          },
+          {
+            "name": "ingredients",
+            "in": "formData",
+            "description": "Recipe ingredients",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "example": {
+                  "id": "640c2dd963a319ea671e376c",
+                  "measure": "3/4 cup"
+                }
+              }
+            }
+          }
+        ],
+
+        "responses": {
+          "405": {
+            "description": "Invalid input"
           }
         }
       }
@@ -365,17 +492,10 @@
       }
     },
     "securitySchemes": {
-      "soYummy_auth": {
-        "type": "oauth2",
-        "flows": {
-          "implicit": {
-            "authorizationUrl": "https://petstore3.swagger.io/oauth/authorize",
-            "scopes": {
-              "write:pets": "modify pets in your account",
-              "read:pets": "read your pets"
-            }
-          }
-        }
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
   }

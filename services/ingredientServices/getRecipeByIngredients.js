@@ -2,7 +2,10 @@ const { RequestError } = require("../../helpers");
 const { Recipe } = require("../../models/recipeModel");
 
 const getRecipeByIngredients = async (req) => {
-  const { query } = req.query;
+  let { query, page = 1, limit = 12 } = req.query;
+  limit = parseInt(limit);
+
+  const skip = (page - 1) * limit;
 
   const ingredient = query.toString();
 
@@ -42,9 +45,13 @@ const getRecipeByIngredients = async (req) => {
         "ingredients.ttl": { $regex: ingredient, $options: "i" },
       },
     },
+
     {
       $unset: ["ingredientsData", "ingredients.id"],
     },
+    { $setWindowFields: { output: { totalCount: { $count: {} } } } },
+    { $skip: skip },
+    { $limit: limit },
   ]);
   if (finnedRecipes.length <= 0)
     throw new RequestError(
