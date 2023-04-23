@@ -15,9 +15,9 @@ const getUserRecipes = async (req) => {
       },
     },
     { $setWindowFields: { output: { totalCount: { $count: {} } } } },
-  ])
-    .skip(skip)
-    .limit(limit);
+    { $skip: skip },
+    { $limit: limit },
+  ]);
 };
 
 module.exports = { getUserRecipes };

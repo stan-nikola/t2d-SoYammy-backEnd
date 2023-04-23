@@ -21,7 +21,7 @@ const router = express.Router();
 router.post(
   "/",
   authMiddleware,
-  uploadCloud.single("recipesImage"),
+  uploadCloud.single("recipeImage"),
   validationMiddleware(joiRecipeSchema),
   asyncWrapper(addOwnRecipeController)
 );
