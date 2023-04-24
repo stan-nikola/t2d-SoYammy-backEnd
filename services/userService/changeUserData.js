@@ -1,5 +1,5 @@
 const { User } = require("../../models/userModel");
-const { RegistrationConflict } = require("../../helpers");
+const { FileSizeError } = require("../../helpers");
 
 const changeUserData = async (req) => {
   // Использует объект изменений, который содержит только то свойство, которое изменилось
@@ -9,19 +9,19 @@ const changeUserData = async (req) => {
     objectOfChanges.name = req.body.name;
   }
   if (req.file) {
-    const properFileSize = 2097152; // this is 2 Mb
-    const fileSize = req.headers["content-length"];
-    console.log("fileSize = ", fileSize);
-    if (fileSize > properFileSize) {
-      throw new RegistrationConflict(
-        `This file is too large. The proper file size must be under ${
-          properFileSize / 1024 / 1024
-        } Mb`
-      );
-    }
+    // const properFileSize = 2097152; // this is 2 Mb
+    // const fileSize = req.headers["content-length"];
+    // console.log("fileSize = ", fileSize);
+    // if (fileSize > properFileSize) {
+    //   throw new FileSizeError(
+    //     `This file is too large. The proper file size must be under ${
+    //       properFileSize / 1024 / 1024
+    //     } Mb`
+    //   );
+    // }
     objectOfChanges.avatarUrl = req.file.path;
   }
-  console.log("objectOfChanges =", objectOfChanges);
+  // console.log("objectOfChanges =", objectOfChanges);
   return await User.findByIdAndUpdate(
     req.user._id,
     { ...objectOfChanges },

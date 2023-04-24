@@ -1,13 +1,4 @@
 const express = require("express");
-// const {
-//   userRegistrationController,
-// } = require("../../controllers/authControllers/userRegistrationController");
-// const {
-//   userLoginController,
-// } = require("../../controllers/authControllers/userLoginController");
-// const {
-//   userLogoutController,
-// } = require("../../controllers/authControllers/userLogoutController");
 
 const {
   userRegistrationController,
@@ -17,11 +8,27 @@ const {
 
 const { asyncWrapper } = require("../../helpers");
 const { authMiddleware } = require("../../middlewares");
+const {
+  validationMiddleware,
+} = require("../../middlewares/validalidationMiddleware");
+
+const {
+  userRegistrationSchema,
+  userLoginSchema,
+} = require("../../models/userModel");
 
 const router = express.Router();
 
-router.post("/register", asyncWrapper(userRegistrationController));
-router.post("/login", asyncWrapper(userLoginController));
+router.post(
+  "/register",
+  validationMiddleware(userRegistrationSchema),
+  asyncWrapper(userRegistrationController)
+);
+router.post(
+  "/login",
+  validationMiddleware(userLoginSchema),
+  asyncWrapper(userLoginController)
+);
 router.post("/logout", authMiddleware, asyncWrapper(userLogoutController));
 
 module.exports = router;

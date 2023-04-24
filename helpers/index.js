@@ -3,8 +3,10 @@ const categories = require("./categories");
 
 const {
   RegistrationConflict,
+  InvalidEmail,
   LoginError,
   NotAuthorizedError,
+  FileSizeError,
   ValidationError,
   RequestError,
   NonExistingParamsError,
@@ -22,8 +24,10 @@ module.exports = {
   sendEmail,
 
   RegistrationConflict,
+  InvalidEmail,
   LoginError,
   NotAuthorizedError,
+  FileSizeError,
   ValidationError,
   RequestError,
   NonExistingParamsError,

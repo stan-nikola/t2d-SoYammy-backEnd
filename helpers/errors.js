@@ -12,6 +12,12 @@ class RegistrationConflict extends SoYummyAppError {
   }
 }
 
+class InvalidEmail extends SoYummyAppError {
+  constructor(message) {
+    super(message);
+    this.status = 401;
+  }
+}
 class LoginError extends SoYummyAppError {
   constructor(message) {
     super(message);
@@ -64,6 +70,7 @@ class ParamsConflictError extends SoYummyAppError {
 module.exports = {
   SoYummyAppError,
   RegistrationConflict,
+  InvalidEmail,
   LoginError,
   NotAuthorizedError,
   FileSizeError,
