@@ -1,5 +1,5 @@
 const { User } = require("../../models/userModel");
-const { FileSizeError } = require("../../helpers");
+// const { FileSizeError } = require("../../helpers");
 
 const changeUserData = async (req) => {
   // Использует объект изменений, который содержит только то свойство, которое изменилось
