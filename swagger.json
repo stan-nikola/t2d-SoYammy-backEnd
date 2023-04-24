@@ -180,7 +180,10 @@
               "items": {
                 "type": "object",
                 "properties": {
-                  "_id": { "type": "string" },
+                  "_id": {
+                    "type": "string",
+                    "example": "Chicken"
+                  },
                   "title": { "type": "string" },
                   "category": { "type": "string" },
                   "area": { "type": "string" },
@@ -334,17 +337,6 @@
           }
         ]
       },
-       "Unauthorized": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "example": "Not authorized"
-          }
-        }
-      },
-
-
       "Unauthorized": {
         "type": "object",
         "properties": {
@@ -355,7 +347,6 @@
         }
       }
     },
-
     "securitySchemes": {
       "bearerAuth": {
         "type": "http",
