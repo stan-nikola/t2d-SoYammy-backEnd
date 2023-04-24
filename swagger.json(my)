@@ -1,0 +1,367 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "version": "1.0.1",
+    "title": "Swagger SoYummy",
+    "description": "This is a sample Cooking Book Server based on the OpenAPI 3.0 specification. \n\n\nSome useful links:\n- [The SoYummy FrontEnd repository](https://github.com/NatashaFedorova/so-yummy),\n- [The SoYummy BackEnd repository](https://github.com/stan-nikola/t2d-SoYammy-backEnd)"
+  },
+  "externalDocs": {
+    "description": "Live page The SoYummy  App",
+    "url": "https://natashafedorova.github.io/so-yummy/"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api"
+    }
+  ],
+
+  "consumers": ["application/json", "multipart/form-data"],
+  "produces": ["application/json", "multipart/form-data"],
+  "tags": [
+    {
+      "name": "auth",
+      "description": "User Authorization"
+    },
+    {
+      "name": "user",
+      "description": "Operations about user"
+    },
+
+    {
+      "name": "recipes",
+      "description": "Access to recipe"
+    },
+    {
+      "name": "ownrecipes",
+      "description": "Access to recipe"
+    },
+    {
+      "name": "ingredient",
+      "description": "Access to ingredient"
+    }
+  ],
+  "paths": {
+    "/recipes/category-list": {
+      "get": {
+        "tags": ["recipes"],
+        "summary": "Returns recipes categoty list",
+        "description": "Returns array of ingredients",
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Category-list"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "unautorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recipes/main-page": {
+      "get": {
+        "tags": ["recipes"],
+        "summary": "Returns recipes by category to the main page",
+        "description": "Returns an array of recipes sorted by category as objects.",
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Main-page"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "unautorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/category/{category}": {
+      "get": {
+        "tags": ["recipes"],
+        "summary": "Returns recipes by category",
+        "description": "Returns an object that consists of an array of recipes of the specified category and the total number of recipes.",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "category",
+            "required": true,
+            "type": "string",
+            "description": "recipe category",
+            "example": "Dessert"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "type": "intager",
+            "description": "page number",
+            "example": 1
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "type": "intager",
+            "description": "recipes quantity by one page",
+            "example": 8
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Main-page"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "unautorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "components": {
+    "schemas": {
+      "Category-list": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "example": "Beef"
+        },
+        "example": ["Beef", "Chicken", "Dessert"]
+      },
+      "Main-page": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string"
+            },
+            "recipes": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "_id": { "type": "string" },
+                  "title": { "type": "string" },
+                  "category": { "type": "string" },
+                  "area": { "type": "string" },
+                  "instructions": { "type": "string" },
+                  "description": { "type": "string" },
+                  "thumb": { "type": "string" },
+                  "preview": { "type": "string" },
+                  "time": { "type": "string" },
+                  "youtube": { "type": "string" },
+                  "tags": {
+                    "type": "array",
+                    "items": { "type": "string" }
+                  },
+                  "createdAt": {
+                    "type": "string",
+                    "format": " date-time"
+                  },
+                  "updatedAt": {
+                    "type": "string",
+                    "format": " date-time"
+                  },
+                  "ingredients": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "measure": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "example": [
+          {
+            "_id": "Chicken",
+            "recipes": [
+              {
+                "_id": "640cd5ac2d9fecf12e8897f1",
+                "title": "Pad See Ew",
+                "category": "Chicken",
+                "area": "Thai",
+                "instructions": "Mix Sauce in small bowl.\r\nMince garlic into wok with oil. Place over high heat, when hot, add chicken and Chinese broccoli stems, cook until chicken is light golden.\r\nPush to the side of the wok, crack egg in and scramble. Don't worry if it sticks to the bottom of the wok - it will char and which adds authentic flavour.\r\nAdd noodles, Chinese broccoli leaves and sauce. Gently mix together until the noodles are stained dark and leaves are wilted. Serve immediately!",
+                "description": "A Thai stir-fry dish made with wide rice noodles, soy sauce, oyster sauce, Chinese broccoli, and meat (such as chicken or beef).",
+                "thumb": "https://www.themealdb.com/images/media/meals/uuuspp1468263334.jpg",
+                "preview": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560401/nl3ks6ugu4uafh8fp4ot.jpg",
+                "time": "20",
+                "youtube": "https://www.youtube.com/watch?v=Ohy1DELF4is",
+                "tags": ["Pasta"],
+                "createdAt": "2023-03-11T19:25:33.240Z",
+                "updatedAt": "2023-04-14T20:02:28.085Z",
+                "ingredients": [
+                  {
+                    "id": "640c2dd963a319ea671e3755",
+                    "measure": "6oz/180g"
+                  },
+                  {
+                    "id": "640c2dd963a319ea671e36bd",
+                    "measure": "2 tbsp"
+                  }
+                ]
+              },
+              {
+                "_id": "640cd5ac2d9fecf12e8897f0",
+                "title": "Teriyaki Chicken Casserole",
+                "category": "Chicken",
+                "area": "Japanese",
+                "instructions": "Preheat oven to 350° F. Spray a 9x13-inch baking pan with non-stick spray.\r\nCombine soy sauce, ½ cup water, brown sugar, ginger and garlic in a small saucepan and cover. Bring to a boil over medium heat. Remove lid and cook for one minute once boiling.\r\nMeanwhile, stir together the corn starch and 2 tablespoons of water in a separate dish until smooth. Once sauce is boiling, add mixture to the saucepan and stir to combine. Cook until the sauce starts to thicken then remove from heat.\r\nPlace the chicken breasts in the prepared pan. Pour one cup of the sauce over top of chicken. Place chicken in oven and bake 35 minutes or until cooked through. Remove from oven and shred chicken in the dish using two forks.\r\n*Meanwhile, steam or cook the vegetables according to package directions.\r\nAdd the cooked vegetables and rice to the casserole dish with the chicken. Add most of the remaining sauce, reserving a bit to drizzle over the top when serving. Gently toss everything together in the casserole dish until combined. Return to oven and cook 15 minutes. Remove from oven and let stand 5 minutes before serving. Drizzle each serving with remaining sauce. Enjoy!",
+                "description": "A Japanese-inspired casserole made with chicken, teriyaki sauce, rice, and vegetables.",
+                "thumb": "https://www.themealdb.com/images/media/meals/wvpsxx1468256321.jpg",
+                "preview": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560401/g7gww5fdeu7kjti0fk7s.jpg",
+                "time": "75",
+                "youtube": "https://www.youtube.com/watch?v=4aZr5hZXP_s",
+                "tags": ["Meat", "Casserole"],
+                "createdAt": "2023-03-11T19:25:33.240Z",
+                "updatedAt": "2023-04-14T20:02:28.085Z",
+                "ingredients": [
+                  {
+                    "id": "640c2dd963a319ea671e376c",
+                    "measure": "3/4 cup"
+                  },
+                  {
+                    "id": "640c2dd963a319ea671e378f",
+                    "measure": "1/2 cup"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "_id": "Starter",
+            "recipes": [
+              {
+                "_id": "640cd5ac2d9fecf12e8897f6",
+                "title": "Cream Cheese Tart",
+                "category": "Starter",
+                "area": "Unknown",
+                "instructions": "Crust: make a dough from 250g flour (I like mixing different flours like plain and wholegrain spelt flour), 125g butter, 1 egg and a pinch of salt, press it into a tart form and place it in the fridge. Filling: stir 300g cream cheese and 100ml milk until smooth, add in 3 eggs, 100g grated parmesan cheese and season with salt, pepper and nutmeg. Take the crust out of the fridge and prick the bottom with a fork. Pour in the filling and bake at 175 degrees C for about 25 minutes. Cover the tart with some aluminium foil after half the time. In the mean time, slice about 350g mini tomatoes. In a small pan heat 3tbsp olive oil, 3tbsp white vinegar, 1 tbsp honey, salt and pepper and combine well. Pour over the tomato slices and mix well. With a spoon, place the tomato slices on the tart, avoiding too much liquid on it. Decorate with basil leaves and enjoy",
+                "description": "A tart made with a sweet shortcrust pastry shell and a filling made with cream cheese, sugar, eggs, and vanilla extract.",
+                "thumb": "https://www.themealdb.com/images/media/meals/wurrux1468416624.jpg",
+                "preview": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560403/ldjhhe56jmuhvmsqsvqp.jpg",
+                "time": "50",
+                "youtube": "https://www.youtube.com/watch?v=UhQPwO4uymo",
+                "tags": ["Tart", "Savory"],
+                "createdAt": "2023-03-11T19:25:33.240Z",
+                "updatedAt": "2023-04-14T20:02:28.085Z",
+                "ingredients": [
+                  {
+                    "id": "640c2dd963a319ea671e36d7",
+                    "measure": "250g"
+                  },
+                  {
+                    "id": "640c2dd963a319ea671e367e",
+                    "measure": "125g"
+                  }
+                ]
+              },
+              {
+                "_id": "640cd5ac2d9fecf12e88982c",
+                "title": "Clam chowder",
+                "category": "Starter",
+                "area": "American",
+                "instructions": "Rinse the clams in several changes of cold water and drain well. Tip the clams into a large pan with 500ml of water. Cover, bring to the boil and simmer for 2 mins until the clams have just opened. Tip the contents of the pan into a colander over a bowl to catch the clam stock. When cool enough to handle, remove the clams from their shells – reserving a handful of empty shells for presentation if you want. Strain the clam stock into a jug, leaving any grit in the bottom of the bowl. You should have around 800ml stock.\r\nHeat the butter in the same pan and sizzle the bacon for 3-4 mins until it starts to brown. Stir in the onion, thyme and bay and cook everything gently for 10 mins until the onion is soft and golden. Scatter over the flour and stir in to make a sandy paste, cook for 2 mins more, then gradually stir in the clam stock then the milk and the cream.\r\nThrow in the potatoes, bring everything to a simmer and leave to bubble away gently for 10 mins or until the potatoes are cooked. Use a fork to crush a few of the potato chunks against the side of the pan to help thicken – you still want lots of defined chunks though. Stir through the clam meat and the few clam shells, if you've gone down that route, and simmer for a minute to reheat. Season with plenty of black pepper and a little salt, if needed, then stir through the parsley just before ladling into bowls or hollowed-out crusty rolls.",
+                "description": "A creamy soup made with clams, potatoes, and other ingredients. Perfect for a cozy night in.",
+                "thumb": "https://www.themealdb.com/images/media/meals/rvtvuw1511190488.jpg",
+                "preview": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560538/v8hhb1zeu0tegaw1xlzd.jpg",
+                "time": "50",
+                "youtube": "https://www.youtube.com/watch?v=fEN_fm6kX6k",
+                "tags": [],
+                "createdAt": "2023-03-11T19:25:33.241Z",
+                "updatedAt": "2023-04-14T20:02:28.085Z",
+                "ingredients": [
+                  {
+                    "id": "640c2dd963a319ea671e37b9",
+                    "measure": "1½ kg"
+                  },
+                  {
+                    "id": "640c2dd963a319ea671e367e",
+                    "measure": "50g"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+       "Unauthorized": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Not authorized"
+          }
+        }
+      },
+
+
+      "Unauthorized": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Not authorized"
+          }
+        }
+      }
+    },
+
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

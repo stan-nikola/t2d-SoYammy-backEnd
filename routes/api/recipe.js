@@ -8,14 +8,23 @@ const {
   getRecipesBySearchQueryController,
   popularRecipesController,
 } = require("../../controllers");
+const { authMiddleware } = require("../../middlewares");
 
 const router = express.Router();
 
-router.get("/category-list", asyncWrapper(getCategoryListController));
+router.get(
+  "/category-list",
+  authMiddleware,
+  asyncWrapper(getCategoryListController)
+);
 
-router.get("/main-page", asyncWrapper(getRecipesController));
+router.get("/main-page", authMiddleware, asyncWrapper(getRecipesController));
 
-router.get("/category/:category", asyncWrapper(getRecipesByCategoryController));
+router.get(
+  "/category/:category",
+  authMiddleware,
+  asyncWrapper(getRecipesByCategoryController)
+);
 
 router.get("/search", asyncWrapper(getRecipesBySearchQueryController));
 router.get("/popular-recipe", asyncWrapper(popularRecipesController));
