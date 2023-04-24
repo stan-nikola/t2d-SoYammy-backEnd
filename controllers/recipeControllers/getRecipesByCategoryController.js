@@ -2,7 +2,8 @@ const { getRecipesByCategory } = require("../../services");
 
 const getRecipesByCategoryController = async (req, res, next) => {
   const { category } = req.params;
-  const { page = 1, limit = 8 } = req.query;
+  let { page = 1, limit = 8 } = req.query;
+  limit = parseInt(limit);
   const skip = (page - 1) * limit;
 
   const normalizeCategory = category.replace(/^\w/, (c) => c.toUpperCase());
