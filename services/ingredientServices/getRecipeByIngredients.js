@@ -4,9 +4,8 @@ const { Recipe } = require("../../models/recipeModel");
 const getRecipeByIngredients = async (req) => {
   let { query, page = 1, limit = 12 } = req.query;
 
-  console.log(query);
-
-  if (query === " " || !query) throw new RequestError("Query is empty");
+  if (query?.trim() === "" || !query)
+    throw new RequestError("Query string is empty or absent");
 
   limit = parseInt(limit);
 
