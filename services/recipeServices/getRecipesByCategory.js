@@ -7,14 +7,18 @@ const getRecipesByCategory = async (category, skip, limit) => {
     throw new RequestError(`Categoty ${category.toLowerCase()} does not found`);
   }
 
-  const result = await Recipe.find({ category }, "")
-    .sort({ createdAt: 1 })
-    .skip(skip)
-    .limit(limit);
+  const result = await Recipe.aggregate([
+    {
+      $match: {
+        category,
+      },
+    },
+    { $setWindowFields: { output: { totalCount: { $count: {} } } } },
+    { $skip: skip },
+    { $limit: limit },
+  ]);
 
-  const totalNumber = await Recipe.find({ category }, "").countDocuments();
-
-  return { result, totalNumber };
+  return result;
 };
 
 module.exports = { getRecipesByCategory };
