@@ -1,18 +1,39 @@
 const cloudinary = require("cloudinary").v2;
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const multer = require("multer");
+const { FileSizeError } = require("../../helpers/errors");
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
   api_key: process.env.CLOUDINARY_KEY,
   api_secret: process.env.CLOUDINARY_SECRET,
 });
+const uploadFileMaxSize = Number(process.env.UPLOAD_IMAGE_MAX_SIZE);
+
+const allowedFormats = ["jpeg", "png", "jpg", "gif", "svg"];
 
 const storage = new CloudinaryStorage({
   cloudinary,
   params: (req, file) => {
-    if (file.fieldname === "recipesImage")
+    const [, ext] = file.mimetype.split("/");
+
+    if (!allowedFormats.includes(ext)) {
+      throw new FileSizeError(
+        `Upload file extension ${[...allowedFormats].join(", ")} expected`
+      );
+    }
+
+    if (req.headers["content-length"] > uploadFileMaxSize) {
+      throw new FileSizeError(
+        `This file is too large. The proper file size must be under ${
+          uploadFileMaxSize / 1024 / 1024
+        } Mb`
+      );
+    }
+
+    if (file.fieldname === "recipesImage") {
       return { folder: "soYummyT2D/recipes" };
+    }
 
     if (file.fieldname === "avatarImage")
       return {
@@ -21,13 +42,12 @@ const storage = new CloudinaryStorage({
       };
   },
 
-  allowedFormats: ["jpeg", "png", "jpg", "gif", "svg"],
+  allowedFormats,
 
   filename: (req, file, cb) => {
     cb(null, file.originalname);
   },
 });
-// const x = console.log("Contant length =");
 
 const uploadCloud = multer({ storage });
 

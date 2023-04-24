@@ -3,6 +3,11 @@ const { Recipe } = require("../../models/recipeModel");
 
 const getRecipeByIngredients = async (req) => {
   let { query, page = 1, limit = 12 } = req.query;
+
+  console.log(query);
+
+  if (query === " " || !query) throw new RequestError("Query is empty");
+
   limit = parseInt(limit);
 
   const skip = (page - 1) * limit;
@@ -53,7 +58,7 @@ const getRecipeByIngredients = async (req) => {
     { $skip: skip },
     { $limit: limit },
   ]);
-  if (finnedRecipes.length <= 0)
+  if (finnedRecipes.length === 0)
     throw new RequestError(
       `Recipe with ${ingredient} not found, try find with another ingredient`
     );
