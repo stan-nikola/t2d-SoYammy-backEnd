@@ -31,8 +31,8 @@ const storage = new CloudinaryStorage({
       );
     }
 
-    if (file.fieldname === "recipesImage") {
-      return { folder: "soYummyT2D/recipes" };
+    if (file.fieldname === "recipeImage") {
+      return { folder: "soYummyT2D/recipe" };
     }
 
     if (file.fieldname === "avatarImage")
