@@ -2,11 +2,12 @@ const { Recipe } = require("../../models");
 const { RequestError } = require("../../helpers");
 
 const getRecipesBySearchQuery = async (title, skip, limit) => {
-  if (!title) {
-    throw new RequestError("query must not be empty");
+  if (title === undefined) {
+    throw new RequestError("Recipe title query must be passed");
   }
+  if (title?.trim() === "") return [];
 
-  const result = await Recipe.aggregate([
+  return await Recipe.aggregate([
     {
       $match: {
         title: { $regex: new RegExp(title, "i") },
@@ -16,14 +17,6 @@ const getRecipesBySearchQuery = async (title, skip, limit) => {
     { $skip: skip },
     { $limit: limit },
   ]);
-
-  if (!result.length) {
-    throw new RequestError(
-      `Recipes with word ${title.toLowerCase()} in the title does not found`
-    );
-  }
-
-  return result;
 };
 
 module.exports = { getRecipesBySearchQuery };

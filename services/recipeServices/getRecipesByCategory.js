@@ -4,7 +4,7 @@ const { RequestError } = require("../../helpers");
 
 const getRecipesByCategory = async (category, skip, limit) => {
   if (!categories.includes(category)) {
-    throw new RequestError(`Categoty ${category.toLowerCase()} does not found`);
+    throw new RequestError(`Category ${category.toLowerCase()} does not found`);
   }
 
   const result = await Recipe.aggregate([

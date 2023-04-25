@@ -4,8 +4,11 @@ const { Recipe } = require("../../models/recipeModel");
 const getRecipeByIngredients = async (req) => {
   let { query, page = 1, limit = 12 } = req.query;
 
-  if (query?.trim() === "" || !query)
-    throw new RequestError("Query string is empty or absent");
+  if (query === undefined) {
+    throw new RequestError("Ingredient name query must be passed");
+  }
+
+  if (query?.trim() === "" || !query) return [];
 
   limit = parseInt(limit);
 
@@ -13,7 +16,7 @@ const getRecipeByIngredients = async (req) => {
 
   const ingredient = query.toString();
 
-  const finnedRecipes = await Recipe.aggregate([
+  return await Recipe.aggregate([
     {
       $lookup: {
         from: "ingredients",
@@ -57,12 +60,6 @@ const getRecipeByIngredients = async (req) => {
     { $skip: skip },
     { $limit: limit },
   ]);
-  if (finnedRecipes.length === 0)
-    throw new RequestError(
-      `Recipe with ${ingredient} not found, try find with another ingredient`
-    );
-
-  return finnedRecipes;
 };
 
 module.exports = { getRecipeByIngredients };
