@@ -19,7 +19,7 @@ const deleteFromFavoriteRecipe = async (req) => {
   );
 
   if (!isInFavorites) {
-    throw new ParamsConflictError("Recipe not in favorites");
+    throw new ParamsConflictError("Recipe are not in favorites");
   }
 
   return Recipe.update({ _id: recipeId }, { $pull: { favorites: { userId } } });

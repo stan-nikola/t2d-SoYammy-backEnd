@@ -8,7 +8,7 @@ const getRecipeByIngredients = async (req) => {
     throw new RequestError("Ingredient name query must be passed");
   }
 
-  if (query?.trim() === "" || !query) return [];
+  if (query?.trim() === "") return [];
 
   limit = parseInt(limit);
 

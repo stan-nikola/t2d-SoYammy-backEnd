@@ -170,17 +170,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "integer",
-                    "format": "int32"
-                  }
+                  "$ref": "#/components/schemas/IngredientsList"
                 }
               }
             }
           },
           "401": {
-            "description": "unautorized",
+            "description": "Unauthorized",
             "content": {
               "application/json": {
                 "schema": {
@@ -220,7 +216,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "Page limit max 12 objects",
+            "description": "Page limit \n- default limit 12 items, with limit=<limit> return as much as you like depending on the length of the collection ",
             "required": false,
             "schema": {
               "type": "string"
@@ -229,18 +225,17 @@
         ],
         "responses": {
           "200": {
-            "description": "successful operation",
-
+            "description": "Successful operation",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/Main-page"
                 }
               }
             }
           },
           "401": {
-            "description": "unautorized",
+            "description": "Unauthorized",
             "content": {
               "application/json": {
                 "schema": {
@@ -250,7 +245,20 @@
             }
           },
           "400": {
-            "description": "Recipe with {query} not found, try find with another ingredient"
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Ingredient name query must be passed"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -260,7 +268,7 @@
         "security": [{ "Bearer": [] }],
         "tags": ["ownrecipes"],
         "summary": "Add own recipe",
-        "description": "",
+        "description": "Returns an object with new added recipe.",
         "consumes": ["multipart/form-data"],
 
         "requestBody": {
@@ -272,7 +280,7 @@
                 "properties": {
                   "recipeImage": {
                     "type": "file",
-                    "description": "Recipe image"
+                    "description": "Recipe image. If the image is not provided, the default one is set"
                   },
                   "title": {
                     "type": "string",
@@ -330,7 +338,14 @@
 
         "responses": {
           "200": {
-            "description": "new recipe object"
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewRecipe"
+                }
+              }
+            }
           },
           "401": {
             "description": "Unauthorized",
@@ -343,7 +358,14 @@
             }
           },
           "400": {
-            "description": "message: fields validation error"
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FieldsValidationError"
+                }
+              }
+            }
           }
         }
       },
@@ -351,7 +373,7 @@
         "security": [{ "Bearer": [] }],
         "tags": ["ownrecipes"],
         "summary": "Get own recipe",
-        "description": "\n\n\nExtras:\n- Example: ownRecipes/?page=1&limit=6 \n- added the totalCount field to each object, which shows the total number of objects in the collection upon request",
+        "description": "\n\n\nExtras:\n- Example: ownRecipes/?page=1&limit=6  \n- added the totalCount field to each object, which shows the total number of objects in the collection upon request",
         "parameters": [
           {
             "name": "page",
@@ -365,7 +387,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "Page limit",
+            "description": "Page limit \n- default limit 4 items, with limit=<limit> return as much as you like depending on the length of the collection ",
             "required": false,
             "schema": {
               "type": "string"
@@ -374,10 +396,17 @@
         ],
         "responses": {
           "200": {
-            "description": "array of own recipes"
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Main-page"
+                }
+              }
+            }
           },
           "401": {
-            "description": "unautorized",
+            "description": "Unauthorized",
             "content": {
               "application/json": {
                 "schema": {
@@ -387,9 +416,7 @@
             }
           }
         }
-      }
-    },
-    "/ownrecipes/{recipeId}": {
+      },
       "delete": {
         "security": [{ "Bearer": [] }],
         "tags": ["ownrecipes"],
@@ -408,7 +435,36 @@
         ],
         "responses": {
           "200": {
-            "description": "recipe deleted"
+            "description": "Recipe deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "recipe deleted"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Recipe not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Recipe with id: 644036a2a4c0b82549aca081 not found"
+                    }
+                  }
+                }
+              }
+            }
           },
           "401": {
             "description": "unautorized",
@@ -419,9 +475,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "Recipe with id: <recipeId> not found"
           }
         }
       }
@@ -660,12 +713,167 @@
           }
         }
       },
+      "IngredientsList": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "measure": {
+              "type": "string",
+              "description": "Measurement unit for the ingredient",
+              "example": "200 g"
+            },
+            "_id": {
+              "type": "string",
+              "description": "Unique identifier for the ingredient",
+              "example": "640c2dd963a319ea671e3724"
+            },
+            "ttl": {
+              "type": "string",
+              "description": "Title of the ingredient",
+              "example": "Mozzarella Balls"
+            },
+            "desc": {
+              "type": "string",
+              "description": "Description of the ingredient",
+              "example": "Small, round balls of mozzarella cheese that are soft, smooth, and milky in flavor, and are often used as a topping for pizzas, salads, and pasta dishes."
+            },
+            "t": {
+              "type": "string",
+              "description": "Additional information about the ingredient",
+              "example": ""
+            },
+            "thb": {
+              "type": "string",
+              "description": "Thumbnail image URL for the ingredient",
+              "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564797/jgwujfs7lp8bvymction.png"
+            }
+          }
+        }
+      },
       "Unauthorized": {
         "type": "object",
         "properties": {
           "message": {
             "type": "string",
             "example": "Not authorized"
+          }
+        }
+      },
+      "FieldsValidationError": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "title is required"
+          }
+        }
+      },
+      "NewRecipe": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Unique identifier for the recipe",
+            "example": "640cd5ac2d9fecf12e8897f5"
+          },
+          "title": {
+            "type": "string",
+            "description": "Title of the recipe",
+            "example": "Mediterranean Pasta Salad"
+          },
+          "category": {
+            "type": "string",
+            "description": "Category of the recipe",
+            "example": "Seafood"
+          },
+          "area": {
+            "type": "string",
+            "description": "Area where the recipe is from",
+            "example": "Italian"
+          },
+          "instructions": {
+            "type": "string",
+            "description": "Instructions for making the recipe",
+            "example": "Bring a large saucepan of salted water to the boil\r\nAdd the pasta, stir once and cook for about 10 minutes or as directed on the packet.\r\nMeanwhile, wash the tomatoes and cut into quarters. Slice the olives. Wash the basil.\r\nPut the tomatoes into a salad bowl and tear the basil leaves over them. Add a tablespoon of olive oil and mix.\r\nWhen the pasta is ready, drain into a colander and run cold water over it to cool it quickly.\r\nToss the pasta into the salad bowl with the tomatoes and basil.\r\nAdd the sliced olives, drained mozzarella balls, and chunks of tuna. Mix well and let the salad rest for at least half an hour to allow the flavours to mingle.\r\nSprinkle the pasta with a generous grind of black pepper and drizzle with the remaining olive oil just before serving."
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the recipe",
+            "example": "A salad made with pasta, vegetables (such as tomatoes, cucumbers, and olives), feta cheese, and a dressing made with olive oil and lemon juice."
+          },
+          "thumb": {
+            "type": "string",
+            "description": "Thumbnail image URL for the recipe",
+            "example": "https://www.themealdb.com/images/media/meals/wvqpwt1468339226.jpg"
+          },
+          "preview": {
+            "type": "string",
+            "description": "Preview image URL for the recipe",
+            "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560402/mwtf7uqrnsxvlpjqtslc.jpg"
+          },
+          "time": {
+            "type": "string",
+            "description": "Total cooking time for the recipe",
+            "example": "27"
+          },
+
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "Pasta"
+            },
+            "description": "Tags for the recipe",
+            "example": ["Pasta", "Baking"]
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Date and time when the recipe was created",
+            "example": "2023-03-11T19:25:33.240Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "Date and time when the recipe was last updated",
+            "example": "2023-04-14T20:02:28.085Z"
+          },
+          "ingredients": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "measure": {
+                  "type": "string",
+                  "description": "Measurement unit for the ingredient",
+                  "example": "200 g"
+                },
+                "_id": {
+                  "type": "string",
+                  "description": "Unique identifier for the ingredient",
+                  "example": "640c2dd963a319ea671e3724"
+                },
+                "ttl": {
+                  "type": "string",
+                  "description": "Title of the ingredient",
+                  "example": "Mozzarella Balls"
+                },
+                "desc": {
+                  "type": "string",
+                  "description": "Description of the ingredient",
+                  "example": "Small, round balls of mozzarella cheese that are soft, smooth, and milky in flavor, and are often used as a topping for pizzas, salads, and pasta dishes."
+                },
+                "t": {
+                  "type": "string",
+                  "description": "Additional information about the ingredient",
+                  "example": ""
+                },
+                "thb": {
+                  "type": "string",
+                  "description": "Thumbnail image URL for the ingredient",
+                  "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564797/jgwujfs7lp8bvymction.png"
+                }
+              }
+            }
           }
         }
       }
