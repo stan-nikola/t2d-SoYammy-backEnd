@@ -6,7 +6,7 @@ const removeProductFromListController = async (req, res, next) => {
 
   const result = await removeProductFromList(userId, productId);
 
-  res.status(200).json(result);
+  res.status(200).json(result.shoppingList);
 };
 
 module.exports = { removeProductFromListController };

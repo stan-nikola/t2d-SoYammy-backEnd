@@ -1,0 +1,868 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "version": "1.0.1",
+    "title": "Swagger SoYummy",
+    "description": "This is a sample Cooking Book Server based on the OpenAPI 3.0 specification. \n\n\nSome useful links:\n- [The SoYummy FrontEnd repository](https://github.com/NatashaFedorova/so-yummy),\n- [The SoYummy BackEnd repository](https://github.com/stan-nikola/t2d-SoYammy-backEnd)"
+  },
+  "externalDocs": {
+    "description": "Live page The SoYummy  App",
+    "url": "https://natashafedorova.github.io/so-yummy/"
+  },
+  "servers": [
+    {
+      "url": "https://t2d-soyammy-backend.onrender.com/api"
+    },
+    {
+      "url": "http://localhost:3000/api"
+    }
+  ],
+
+  "tags": [
+    {
+      "name": "recipes",
+      "description": "Access to recipe"
+    },
+
+    {
+      "name": "shoppinglist",
+      "description": "Access to user shoppinglist"
+    }
+  ],
+  "paths": {
+    "/recipes/category-list": {
+      "get": {
+        "tags": ["recipes"],
+        "summary": "Returns recipes categoty list",
+        "description": "Returns array of ingredients",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Category-list"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recipes/main-page": {
+      "get": {
+        "tags": ["recipes"],
+        "summary": "Returns recipes by category to the main page",
+        "description": "Returns an array of recipes sorted by category as objects.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Main-page"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recipes/category/{category}": {
+      "get": {
+        "tags": ["recipes"],
+        "summary": "Returns recipes by category",
+        "description": "Returns an object that consists of an array of recipes of the specified category and the total number of recipes.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "category",
+            "required": true,
+            "type": "string",
+            "description": "recipe category",
+            "example": "Dessert"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "type": "intager",
+            "description": "page number",
+            "example": 1
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "type": "intager",
+            "description": "recipes quantity by one page",
+            "example": 8
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryById"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recipes/{id}": {
+      "get": {
+        "tags": ["recipes"],
+        "summary": "Returns recipes by id",
+        "description": "Returns an object with information about recipe",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "description": "recipe id",
+            "example": "640cd5ac2d9fecf12e8897f5"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/recipeById"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "desctiption": "message",
+                      "example": "Recipe with id: 640cd5ac2d9fecf12e8897a5 not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recipes/search": {
+      "get": {
+        "tags": ["recipes"],
+        "summary": "Returns recipes by search query",
+        "description": "Returns an object with information about recipe",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "title",
+            "type": "string",
+            "description": "search query",
+            "example": "Seafood"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryById"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "desctiption": "message",
+                      "example": "Recipe with id: 640cd5ac2d9fecf12e8897a5 not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/shoppinglist": {
+      "get": {
+        "tags": ["shoppinglist"],
+        "summary": "Returns user shoppinglist",
+        "description": "Returns an object with information about shoppinglist",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ShoppingList"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["shoppinglist"],
+        "summary": "Add to shoppinglist",
+        "description": "Add ingredient in the user shopping list",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Description of the ingredient",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddIngredientToShoppingList"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ShoppingList"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["shoppinglist"],
+        "summary": "Remove ingredient from the shoppinglist",
+        "description": "Remove ingredient from the user shopping list by _id",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "_id of the ingredient",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["_id"],
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "description": "ingredient id",
+                    "example": "3931be8c-21ab-4bff-baf1-fe3d020ce677"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ShoppingList"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "components": {
+    "schemas": {
+      "Category-list": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "example": "Beef"
+        },
+        "example": ["Beef", "Chicken", "Dessert"]
+      },
+      "Main-page": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string",
+              "description": "Unique identifier for the category",
+              "example": "Chicken"
+            },
+            "recipes": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "description": "Unique identifier for the recipe",
+                    "example": "640cd5ac2d9fecf12e8897f1"
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "Title of the recipe",
+                    "example": "Pad See Ew"
+                  },
+                  "category": {
+                    "type": "string",
+                    "description": "Category of the recipe",
+                    "example": "Chicken"
+                  },
+                  "area": {
+                    "type": "string",
+                    "description": "Area where the recipe is from",
+                    "example": "Thai"
+                  },
+                  "instructions": {
+                    "type": "string",
+                    "description": "Instructions for making the recipe",
+                    "example": "Mix Sauce in small bowl.\r\nMince garlic into wok with oil. Place over high heat, when hot, add chicken and Chinese broccoli stems, cook until chicken is light golden.\r\nPush to the side of the wok, crack egg in and scramble. Don't worry if it sticks to the bottom of the wok - it will char and which adds authentic flavour.\r\nAdd noodles, Chinese broccoli leaves and sauce. Gently mix together until the noodles are stained dark and leaves are wilted. Serve immediately!"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Description of the recipe",
+                    "example": "A Thai stir-fry dish made with wide rice noodles, soy sauce, oyster sauce, Chinese broccoli, and meat (such as chicken or beef)."
+                  },
+                  "thumb": {
+                    "type": "string",
+                    "description": "Thumbnail image URL for the recipe",
+                    "example": "https://www.themealdb.com/images/media/meals/uuuspp1468263334.jpg"
+                  },
+                  "preview": {
+                    "type": "string",
+                    "description": "Preview image URL for the recipe",
+                    "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560401/nl3ks6ugu4uafh8fp4ot.jpg"
+                  },
+                  "time": {
+                    "type": "string",
+                    "description": "Total cooking time for the recipe",
+                    "example": "20"
+                  },
+                  "youtube": {
+                    "type": "string",
+                    "description": "YouTube video URL for the recipe",
+                    "example": "https://www.youtube.com/watch?v=Ohy1DELF4is"
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Tags for the recipe",
+                      "example": "Pasta"
+                    }
+                  },
+                  "createdAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Date and time when the recipe was created",
+                    "example": "2023-03-11T19:25:33.240Z"
+                  },
+                  "updatedAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Date and time when the recipe was last updated",
+                    "example": "2023-04-14T20:02:28.085Z"
+                  },
+                  "ingredients": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "description": "Unique identifier for the ingredient",
+                          "example": "640c2dd963a319ea671e3755"
+                        },
+                        "measure": {
+                          "type": "string",
+                          "description": "Measurement unit for the ingredient",
+                          "example": "2 tbsp"
+                        }
+                      }
+                    }
+                  },
+                  "totalCount": { "type": "number", "example": 12 }
+                }
+              }
+            }
+          }
+        }
+      },
+      "CategoryById": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string",
+              "description": "Unique identifier for the recipe",
+              "example": "640cd5ac2d9fecf12e8897f5"
+            },
+            "title": {
+              "type": "string",
+              "description": "Title of the recipe",
+              "example": "Mediterranean Pasta Salad"
+            },
+            "category": {
+              "type": "string",
+              "description": "Category of the recipe",
+              "example": "Seafood"
+            },
+            "area": {
+              "type": "string",
+              "description": "Area where the recipe is from",
+              "example": "Italian"
+            },
+            "instructions": {
+              "type": "string",
+              "description": "Instructions for making the recipe",
+              "example": "Bring a large saucepan of salted water to the boil\r\nAdd the pasta, stir once and cook for about 10 minutes or as directed on the packet.\r\nMeanwhile, wash the tomatoes and cut into quarters. Slice the olives. Wash the basil.\r\nPut the tomatoes into a salad bowl and tear the basil leaves over them. Add a tablespoon of olive oil and mix.\r\nWhen the pasta is ready, drain into a colander and run cold water over it to cool it quickly.\r\nToss the pasta into the salad bowl with the tomatoes and basil.\r\nAdd the sliced olives, drained mozzarella balls, and chunks of tuna. Mix well and let the salad rest for at least half an hour to allow the flavours to mingle.\r\nSprinkle the pasta with a generous grind of black pepper and drizzle with the remaining olive oil just before serving."
+            },
+            "description": {
+              "type": "string",
+              "description": "Description of the recipe",
+              "example": "A salad made with pasta, vegetables (such as tomatoes, cucumbers, and olives), feta cheese, and a dressing made with olive oil and lemon juice."
+            },
+            "thumb": {
+              "type": "string",
+              "description": "Thumbnail image URL for the recipe",
+              "example": "https://www.themealdb.com/images/media/meals/wvqpwt1468339226.jpg"
+            },
+            "preview": {
+              "type": "string",
+              "description": "Preview image URL for the recipe",
+              "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560402/mwtf7uqrnsxvlpjqtslc.jpg"
+            },
+            "time": {
+              "type": "string",
+              "description": "Total cooking time for the recipe",
+              "example": "27"
+            },
+            "youtube": {
+              "type": "string",
+              "description": "YouTube video URL for the recipe",
+              "example": "https://www.youtube.com/watch?v=e52IL8zYmaE"
+            },
+            "tags": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "example": "Pasta"
+              },
+              "description": "Tags for the recipe",
+              "example": ["Pasta", "Baking"]
+            },
+            "createdAt": {
+              "type": "string",
+              "description": "Date and time when the recipe was created",
+              "example": "2023-03-11T19:25:33.240Z"
+            },
+            "updatedAt": {
+              "type": "string",
+              "description": "Date and time when the recipe was last updated",
+              "example": "2023-04-14T20:02:28.085Z"
+            },
+            "ingredients": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "description": "Unique identifier for the ingredient",
+                    "example": "640c2dd963a319ea671e3724"
+                  },
+                  "measure": {
+                    "type": "string",
+                    "description": "Measurement unit for the ingredient",
+                    "example": "200 g"
+                  }
+                }
+              },
+              "description": "Ingredients required for the recipe"
+            },
+            "favorites": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "userId": {
+                    "type": "string",
+                    "description": "Unique identifier for the user",
+                    "example": "644160cec6c003bd4a5d5f1c"
+                  }
+                }
+              },
+              "description": "Users whose added recipe to favorite"
+            },
+            "totalCount": {
+              "type": "intager",
+              "description": "Total number of recipes by category",
+              "example": "64"
+            }
+          }
+        }
+      },
+
+      "recipeById": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Unique identifier for the recipe",
+            "example": "640cd5ac2d9fecf12e8897f5"
+          },
+          "title": {
+            "type": "string",
+            "description": "Title of the recipe",
+            "example": "Mediterranean Pasta Salad"
+          },
+          "category": {
+            "type": "string",
+            "description": "Category of the recipe",
+            "example": "Seafood"
+          },
+          "area": {
+            "type": "string",
+            "description": "Area where the recipe is from",
+            "example": "Italian"
+          },
+          "instructions": {
+            "type": "string",
+            "description": "Instructions for making the recipe",
+            "example": "Bring a large saucepan of salted water to the boil\r\nAdd the pasta, stir once and cook for about 10 minutes or as directed on the packet.\r\nMeanwhile, wash the tomatoes and cut into quarters. Slice the olives. Wash the basil.\r\nPut the tomatoes into a salad bowl and tear the basil leaves over them. Add a tablespoon of olive oil and mix.\r\nWhen the pasta is ready, drain into a colander and run cold water over it to cool it quickly.\r\nToss the pasta into the salad bowl with the tomatoes and basil.\r\nAdd the sliced olives, drained mozzarella balls, and chunks of tuna. Mix well and let the salad rest for at least half an hour to allow the flavours to mingle.\r\nSprinkle the pasta with a generous grind of black pepper and drizzle with the remaining olive oil just before serving."
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the recipe",
+            "example": "A salad made with pasta, vegetables (such as tomatoes, cucumbers, and olives), feta cheese, and a dressing made with olive oil and lemon juice."
+          },
+          "thumb": {
+            "type": "string",
+            "description": "Thumbnail image URL for the recipe",
+            "example": "https://www.themealdb.com/images/media/meals/wvqpwt1468339226.jpg"
+          },
+          "preview": {
+            "type": "string",
+            "description": "Preview image URL for the recipe",
+            "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560402/mwtf7uqrnsxvlpjqtslc.jpg"
+          },
+          "time": {
+            "type": "string",
+            "description": "Total cooking time for the recipe",
+            "example": "27"
+          },
+          "youtube": {
+            "type": "string",
+            "description": "YouTube video URL for the recipe",
+            "example": "https://www.youtube.com/watch?v=e52IL8zYmaE"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "Pasta"
+            },
+            "description": "Tags for the recipe",
+            "example": ["Pasta", "Baking"]
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Date and time when the recipe was created",
+            "example": "2023-03-11T19:25:33.240Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "Date and time when the recipe was last updated",
+            "example": "2023-04-14T20:02:28.085Z"
+          },
+          "ingredients": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "measure": {
+                  "type": "string",
+                  "description": "Measurement unit for the ingredient",
+                  "example": "200 g"
+                },
+                "_id": {
+                  "type": "string",
+                  "description": "Unique identifier for the ingredient",
+                  "example": "640c2dd963a319ea671e3724"
+                },
+                "ttl": {
+                  "type": "string",
+                  "description": "Title of the ingredient",
+                  "example": "Mozzarella Balls"
+                },
+                "desc": {
+                  "type": "string",
+                  "description": "Description of the ingredient",
+                  "example": "Small, round balls of mozzarella cheese that are soft, smooth, and milky in flavor, and are often used as a topping for pizzas, salads, and pasta dishes."
+                },
+                "t": {
+                  "type": "string",
+                  "description": "Additional information about the ingredient",
+                  "example": ""
+                },
+                "thb": {
+                  "type": "string",
+                  "description": "Thumbnail image URL for the ingredient",
+                  "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564797/jgwujfs7lp8bvymction.png"
+                }
+              }
+            },
+            "description": "Ingredients required for the recipe"
+          },
+          "favorites": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "userId": {
+                  "type": "string",
+                  "description": "Unique identifier for the user",
+                  "example": "644160cec6c003bd4a5d5f1c"
+                }
+              }
+            },
+            "description": "Users whose added recipe to favorite"
+          }
+        }
+      },
+      "ShoppingList": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "image": {
+              "type": "string",
+              "description": "Ingredient`s photo",
+              "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564124/zzxbvvvye3pnooygfdgg.png"
+            },
+            "ingredientId": {
+              "type": "string",
+              "description": "Unique identifier for the ingredient from list of ingredients",
+              "example": "640c2dd963a319ea671e365d"
+            },
+            "recipeID": {
+              "type": "string",
+              "description": "Unique identifier for the recipe",
+              "example": "640cd5ac2d9fecf12e88984e"
+            },
+            "title": {
+              "type": "string",
+              "description": "Name of the ingredient",
+              "example": "Beef"
+            },
+            "weight": {
+              "type": "string",
+              "description": "Amout of an ingredient",
+              "example": "1kg"
+            },
+            "_id": {
+              "type": "string",
+              "description": "Unique identifier for the ingredient in the shoppinglist",
+              "example": "3931be8c-21ab-4bff-baf1-fe3d020ce677"
+            }
+          },
+          "description": "List of ingridients"
+        }
+      },
+      "AddIngredientToShoppingList": {
+        "type": "object",
+        "properties": {
+          "image": {
+            "type": "string",
+            "description": "Ingredient`s photo",
+            "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564124/zzxbvvvye3pnooygfdgg.png"
+          },
+          "ingredientId": {
+            "type": "string",
+            "description": "Unique identifier for the ingredient from list of ingredients",
+            "example": "640c2dd963a319ea671e365d"
+          },
+          "recipeID": {
+            "type": "string",
+            "description": "Unique identifier for the recipe",
+            "example": "640cd5ac2d9fecf12e88984e"
+          },
+          "title": {
+            "type": "string",
+            "description": "Name of the ingredient",
+            "example": "Beef"
+          },
+          "weight": {
+            "type": "string",
+            "description": "Amout of an ingredient",
+            "example": "1kg"
+          }
+        }
+      },
+      "Unauthorized": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Not authorized"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "securitySchemes": {
+    "bearerAuth": {
+      "type": "http",
+      "scheme": "bearer",
+      "bearerFormat": "JWT"
+    }
+  }
+}

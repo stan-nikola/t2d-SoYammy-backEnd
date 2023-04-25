@@ -26,9 +26,17 @@ router.get(
   asyncWrapper(getRecipesByCategoryController)
 );
 
-router.get("/search", asyncWrapper(getRecipesBySearchQueryController));
-router.get("/popular-recipe", asyncWrapper(popularRecipesController));
+router.get(
+  "/search",
+  authMiddleware,
+  asyncWrapper(getRecipesBySearchQueryController)
+);
+router.get(
+  "/popular-recipe",
+  authMiddleware,
+  asyncWrapper(popularRecipesController)
+);
 
-router.get("/:id", asyncWrapper(getRecipeByIdController));
+router.get("/:id", authMiddleware, asyncWrapper(getRecipeByIdController));
 
 module.exports = { recipesRoute: router };
