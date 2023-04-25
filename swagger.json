@@ -34,8 +34,16 @@
       "description": "Access to recipe"
     },
     {
+      "name": "ownrecipes/favorite",
+      "description": "Access to favorite recipes"
+    },
+    {
       "name": "ingredients",
       "description": "Access to ingredient"
+    },
+    {
+      "name": "popular-recipe",
+      "description": "Access to popular recipes"
     }
   ],
   "paths": {
@@ -57,7 +65,7 @@
             }
           },
           "401": {
-            "description": "unautorized",
+            "description": "Unauthorized",
             "content": {
               "application/json": {
                 "schema": {
@@ -87,7 +95,7 @@
             }
           },
           "401": {
-            "description": "unautorized",
+            "description": "Unauthorized",
             "content": {
               "application/json": {
                 "schema": {
@@ -141,7 +149,7 @@
             }
           },
           "401": {
-            "description": "unautorized",
+            "description": "Unauthorized",
             "content": {
               "application/json": {
                 "schema": {
@@ -201,7 +209,8 @@
             "description": "The ingredient name for search",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "Pad See Ew"
             }
           },
           {
@@ -210,7 +219,8 @@
             "description": "Returns 12 objects per page",
             "required": false,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "1"
             }
           },
           {
@@ -219,7 +229,8 @@
             "description": "Page limit \n- default limit 12 items, with limit=<limit> return as much as you like depending on the length of the collection ",
             "required": false,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "10"
             }
           }
         ],
@@ -229,7 +240,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Main-page"
+                  "$ref": "#/components/schemas/Recipes"
                 }
               }
             }
@@ -280,7 +291,7 @@
                 "properties": {
                   "recipeImage": {
                     "type": "file",
-                    "description": "Recipe image. If the image is not provided, the default one is set"
+                    "description": "Recipe image. \n- Max size 3mb \n- Allowed formats jpeg, png, jpg, gif, svg\n-  If the image is not provided, the default one is set "
                   },
                   "title": {
                     "type": "string",
@@ -358,11 +369,17 @@
             }
           },
           "400": {
-            "description": "Unauthorized",
+            "description": "Validation Error",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FieldsValidationError"
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "title is required"
+                    }
+                  }
                 }
               }
             }
@@ -381,7 +398,8 @@
             "description": "Returns 4 objects per page",
             "required": false,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "1"
             }
           },
           {
@@ -390,7 +408,8 @@
             "description": "Page limit \n- default limit 4 items, with limit=<limit> return as much as you like depending on the length of the collection ",
             "required": false,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "10"
             }
           }
         ],
@@ -416,11 +435,13 @@
             }
           }
         }
-      },
+      }
+    },
+    "/ownrecipes/{recipeId}": {
       "delete": {
         "security": [{ "Bearer": [] }],
         "tags": ["ownrecipes"],
-        "summary": "Delete own recipe",
+        "summary": "Delete own recipe by recipe id",
         "description": "",
         "parameters": [
           {
@@ -428,6 +449,7 @@
             "in": "path",
             "description": "ID of the recipe that needs to be deleted",
             "required": true,
+            "example": "6446b8d2a2e4f92cc28b0683",
             "schema": {
               "type": "string"
             }
@@ -467,7 +489,293 @@
             }
           },
           "401": {
-            "description": "unautorized",
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ownrecipes/favorite/{recipeId}": {
+      "put": {
+        "security": [{ "Bearer": [] }],
+        "tags": ["ownrecipes/favorite"],
+        "summary": "Add recipe to favorite",
+        "description": "Returns an object with added to favorite recipe.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "ID of the recipe that needs to be added to favorites",
+            "required": true,
+            "type": "string",
+            "description": "recipe id",
+            "example": "6446b8d2a2e4f92cc28b0683"
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewRecipe"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Recipe id:6446b8d2a2e4f92cc28b068 not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not provided recipe ID error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Already added  conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Recipe id:6446b8d2a2e4f92cc28b0683 already added to favorites"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "security": [{ "Bearer": [] }],
+        "tags": ["ownrecipes/favorite"],
+        "summary": "Delete recipe from favorite",
+        "description": "Returns message.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "ID of the recipe that needs to be deleted from favorites",
+            "required": true,
+            "type": "string",
+            "description": "recipe id",
+            "example": "6446b8d2a2e4f92cc28b0683"
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Recipe successfully added to favorites"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Recipe id:6446b8d2a2e4f92cc28b068 not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not provided recipe ID error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Already deleted conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Recipe are not in favorites"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ownrecipes/favorite/": {
+      "get": {
+        "security": [{ "Bearer": [] }],
+        "tags": ["ownrecipes/favorite"],
+        "summary": "Get user favorites recipes",
+        "description": "\n\n\nExtras:\n- Example: ownRecipes/favorite/?page=1&limit=6  \n- added the totalCount field to each object, which shows the total number of objects in the collection upon request",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Returns 4 objects per page",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "1"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Page limit \n- default limit 4 items, with limit=<limit> return as much as you like depending on the length of the collection ",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "10"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Recipes"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/popular-recipes": {
+      "get": {
+        "security": [{ "Bearer": [] }],
+        "tags": ["popular-recipe"],
+        "summary": "Get popular recipes",
+        "description": "\n\n\nExtras:\n- Example: popular-recipes/?page=1&limit=6  \n- added the totalCount field to each object, which shows the total number of objects in the collection upon request",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Returns 4 objects per page",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "1"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Page limit \n- default limit 4 items, with limit=<limit> return as much as you like depending on the length of the collection ",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "10"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Recipes"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
             "content": {
               "application/json": {
                 "schema": {
@@ -593,7 +901,8 @@
                         }
                       }
                     }
-                  }
+                  },
+                  "totalCount": { "type": "number", "example": 12 }
                 }
               }
             }
@@ -760,15 +1069,7 @@
           }
         }
       },
-      "FieldsValidationError": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "example": "title is required"
-          }
-        }
-      },
+
       "NewRecipe": {
         "type": "object",
         "properties": {
@@ -874,6 +1175,103 @@
                 }
               }
             }
+          }
+        }
+      },
+      "Recipes": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string",
+              "description": "Unique identifier for the recipe",
+              "example": "640cd5ac2d9fecf12e8897f1"
+            },
+            "title": {
+              "type": "string",
+              "description": "Title of the recipe",
+              "example": "Pad See Ew"
+            },
+            "category": {
+              "type": "string",
+              "description": "Category of the recipe",
+              "example": "Chicken"
+            },
+            "area": {
+              "type": "string",
+              "description": "Area where the recipe is from",
+              "example": "Thai"
+            },
+            "instructions": {
+              "type": "string",
+              "description": "Instructions for making the recipe",
+              "example": "Mix Sauce in small bowl.\r\nMince garlic into wok with oil. Place over high heat, when hot, add chicken and Chinese broccoli stems, cook until chicken is light golden.\r\nPush to the side of the wok, crack egg in and scramble. Don't worry if it sticks to the bottom of the wok - it will char and which adds authentic flavour.\r\nAdd noodles, Chinese broccoli leaves and sauce. Gently mix together until the noodles are stained dark and leaves are wilted. Serve immediately!"
+            },
+            "description": {
+              "type": "string",
+              "description": "Description of the recipe",
+              "example": "A Thai stir-fry dish made with wide rice noodles, soy sauce, oyster sauce, Chinese broccoli, and meat (such as chicken or beef)."
+            },
+            "thumb": {
+              "type": "string",
+              "description": "Thumbnail image URL for the recipe",
+              "example": "https://www.themealdb.com/images/media/meals/uuuspp1468263334.jpg"
+            },
+            "preview": {
+              "type": "string",
+              "description": "Preview image URL for the recipe",
+              "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560401/nl3ks6ugu4uafh8fp4ot.jpg"
+            },
+            "time": {
+              "type": "string",
+              "description": "Total cooking time for the recipe",
+              "example": "20"
+            },
+            "youtube": {
+              "type": "string",
+              "description": "YouTube video URL for the recipe",
+              "example": "https://www.youtube.com/watch?v=Ohy1DELF4is"
+            },
+            "tags": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "description": "Tags for the recipe",
+                "example": "Pasta"
+              }
+            },
+            "createdAt": {
+              "type": "string",
+              "format": "date-time",
+              "description": "Date and time when the recipe was created",
+              "example": "2023-03-11T19:25:33.240Z"
+            },
+            "updatedAt": {
+              "type": "string",
+              "format": "date-time",
+              "description": "Date and time when the recipe was last updated",
+              "example": "2023-04-14T20:02:28.085Z"
+            },
+            "ingredients": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Unique identifier for the ingredient",
+                    "example": "640c2dd963a319ea671e3755"
+                  },
+                  "measure": {
+                    "type": "string",
+                    "description": "Measurement unit for the ingredient",
+                    "example": "2 tbsp"
+                  }
+                }
+              }
+            },
+            "totalCount": { "type": "number", "example": 12 }
           }
         }
       }
