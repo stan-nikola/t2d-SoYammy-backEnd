@@ -24,7 +24,7 @@ const addToFavoriteRecipe = async (req) => {
     );
   }
 
-  return Recipe.findByIdAndUpdate(
+  return await Recipe.findByIdAndUpdate(
     recipeId,
     {
       favorites: [...favorites, { userId }],
