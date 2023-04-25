@@ -50,8 +50,8 @@ const userSchema = new Schema({
   },
 
   shoppingList: {
-    type: Object,
-    default: {},
+    type: Array,
+    default: [],
   },
 
   token: {

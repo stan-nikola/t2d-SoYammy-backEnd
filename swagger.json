@@ -11,10 +11,9 @@
   },
   "servers": [
     {
-      "url": "https://t2d-soyammy-backend.onrender.com/api"
+      "url": "localhost:3000/api-docs"
     }
   ],
-
   "tags": [
     {
       "name": "auth",
@@ -22,9 +21,8 @@
     },
     {
       "name": "user",
-      "description": "Operations about user"
+      "description": "Operations with user"
     },
-
     {
       "name": "recipes",
       "description": "Access to recipe"
@@ -39,12 +37,80 @@
     }
   ],
   "paths": {
+    "/auth/register": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Register new user",
+        "description": "Returns just-registered user object",
+        "pameters": [],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "requestBody": {
+          "description": "Registration's object",
+          "required": "true",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": "[name, email, password]",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "User's name",
+                    "example": "Marina"
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "User's email",
+                    "example": "user@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "User's password",
+                    "example": "abrakadabra123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "unautorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/recipes/category-list": {
       "get": {
         "tags": ["recipes"],
         "summary": "Returns recipes categoty list",
         "description": "Returns array of ingredients",
-        "security": [{ "Bearer": [] }],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "successful operation",
@@ -74,7 +140,11 @@
         "tags": ["recipes"],
         "summary": "Returns recipes by category to the main page",
         "description": "Returns an array of recipes sorted by category as objects.",
-        "security": [{ "Bearer": [] }],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "successful operation",
@@ -104,7 +174,11 @@
         "tags": ["recipes"],
         "summary": "Returns recipes by category",
         "description": "Returns an object that consists of an array of recipes of the specified category and the total number of recipes.",
-        "security": [{ "Bearer": [] }],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -197,7 +271,6 @@
         "tags": ["ingredients"],
         "summary": "Get recipe by ingredient name ",
         "description": "\n\n\nExtras:\n- Example: ingredients?query=cucumber&page=1&limit=3 \n- added the totalCount field to each object, which shows the total number of objects in the collection upon request",
-
         "parameters": [
           {
             "name": "query",
@@ -230,7 +303,6 @@
         "responses": {
           "200": {
             "description": "successful operation",
-
             "content": {
               "application/json": {
                 "schema": {
@@ -257,12 +329,15 @@
     },
     "/ownrecipes": {
       "post": {
-        "security": [{ "Bearer": [] }],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "tags": ["ownrecipes"],
         "summary": "Add own recipe",
         "description": "",
         "consumes": ["multipart/form-data"],
-
         "requestBody": {
           "content": {
             "multipart/form-data": {
@@ -327,7 +402,6 @@
             }
           }
         },
-
         "responses": {
           "200": {
             "description": "new recipe object"
@@ -348,7 +422,11 @@
         }
       },
       "get": {
-        "security": [{ "Bearer": [] }],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "tags": ["ownrecipes"],
         "summary": "Get own recipe",
         "description": "\n\n\nExtras:\n- Example: ownRecipes/?page=1&limit=6 \n- added the totalCount field to each object, which shows the total number of objects in the collection upon request",
@@ -391,7 +469,11 @@
     },
     "/ownrecipes/{recipeId}": {
       "delete": {
-        "security": [{ "Bearer": [] }],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "tags": ["ownrecipes"],
         "summary": "Delete own recipe",
         "description": "",
@@ -427,9 +509,49 @@
       }
     }
   },
-
   "components": {
     "schemas": {
+      "RegistrationResponse": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "id": {
+              "type": "string",
+              "description": "User's ID",
+              "example": "644790c4f08af682d46ab758"
+            },
+            "name": {
+              "type": "string",
+              "description": "User's name",
+              "example": "Marina"
+            },
+            "email": {
+              "type": "string",
+              "description": "User's email",
+              "example": "user@example.com"
+            },
+            "avatarUrl": {
+              "type": "string",
+              "description": "User's default avatar link",
+              "example": "https://exampledomain.com/tbe6lqtuz7ki8dcxpqgh.png"
+            },
+            "subscription": {
+              "type": "boolean",
+              "description": "User's subscription status",
+              "example": "false"
+            },
+            "shoppingList": {
+              "type": "array",
+              "description": "User's list of ingredients for shopping"
+            }
+          },
+          "token": {
+            "type": "string",
+            "description": "User's authentification token"
+          }
+        }
+      },
+
       "Category-list": {
         "type": "array",
         "items": {
@@ -678,7 +800,6 @@
       }
     }
   },
-
   "securitySchemes": {
     "bearerAuth": {
       "type": "http",
