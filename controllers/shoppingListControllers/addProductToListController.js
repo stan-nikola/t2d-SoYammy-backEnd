@@ -6,7 +6,7 @@ const addProductToListController = async (req, res, next) => {
 
   const result = await addProductToList(id, product);
 
-  res.status(201).json(result);
+  res.status(201).json(result.shoppingList);
 };
 
 module.exports = { addProductToListController };
