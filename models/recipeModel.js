@@ -12,7 +12,7 @@ const joiRecipeSchema = Joi.object({
   instructions: Joi.string().min(3).max(3000).required(),
   description: Joi.string().min(3).max(3000).required(),
   time: Joi.string().min(1).max(10).required(),
-  tags: Joi.array().items(Joi.string()),
+  tags: Joi.string(),
   ingredients: Joi.string(),
 }).options({ abortEarly: true });
 
