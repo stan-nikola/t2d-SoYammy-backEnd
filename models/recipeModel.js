@@ -9,7 +9,7 @@ const joiRecipeSchema = Joi.object({
     .valid(...categories)
     .required(),
   area: Joi.string(),
-  instructions: Joi.string().min(3).max(3000).required(),
+  instructions: Joi.array().items(Joi.string().min(3).max(3000)).required(),
   description: Joi.string().min(3).max(3000).required(),
   time: Joi.string().min(1).max(5).required(),
   tags: Joi.array().items(Joi.string()),
@@ -36,7 +36,7 @@ const recipeSchema = new Schema(
       type: String,
     },
     instructions: {
-      type: String,
+      type: [String],
       require: [true, "Instructions is required"],
     },
     description: {
