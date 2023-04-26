@@ -42,7 +42,7 @@ const recipeSchema = new Schema(
     preview: { type: String },
     time: { type: String, require: [true, "Time is required"] },
     youtube: { type: String },
-    tags: { type: [String] },
+    tags: { type: String },
     ingredients: [
       {
         id: {
