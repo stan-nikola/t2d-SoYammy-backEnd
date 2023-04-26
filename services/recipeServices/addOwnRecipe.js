@@ -1,4 +1,5 @@
 const { Recipe } = require("../../models");
+const { User } = require("../../models/userModel");
 
 const addOwnRecipe = async (req) => {
   const imageURL = req.file?.path;
@@ -32,6 +33,10 @@ const addOwnRecipe = async (req) => {
     ingredients,
     owner: req.user.id,
   });
+
+  let { _id: id, numberOfOwnRecipes } = req.user;
+  numberOfOwnRecipes += 1;
+  await User.findByIdAndUpdate(id, { numberOfOwnRecipes }, { new: true });
 
   return newRecipe;
 };

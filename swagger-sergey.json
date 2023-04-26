@@ -9,19 +9,25 @@
     "description": "Live page The SoYummy  App",
     "url": "https://natashafedorova.github.io/so-yummy/"
   },
+  "consumes": ["application/json", "multipart/form-data"],
+  "produces": ["application/json"],
   "servers": [
     {
-      "url": "localhost:3000/api-docs"
+      "url": "http://localhost:3000/api"
     }
   ],
   "tags": [
     {
       "name": "auth",
-      "description": "User Authorization"
+      "description": "User authorization"
     },
     {
       "name": "user",
       "description": "Operations with user"
+    },
+    {
+      "name": "subscribe",
+      "description": "Subscribe user for newletters"
     },
     {
       "name": "recipes",
@@ -42,12 +48,7 @@
         "tags": ["auth"],
         "summary": "Register new user",
         "description": "Returns just-registered user object",
-        "pameters": [],
-        "security": [
-          {
-            "Bearer": []
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "description": "Registration's object",
           "required": "true",
@@ -79,17 +80,91 @@
         },
         "responses": {
           "201": {
-            "description": "successful operation",
+            "description": "Successful operation",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RegistrationResponse"
+                  "$ref": "#/components/schemas/AuthResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequest"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Conflict"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Login user",
+        "description": "Returns user object",
+        "parameters": [],
+        "requestBody": {
+          "description": "User's object",
+          "required": "true",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": "[email, password]",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "User's email",
+                    "example": "user@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "User's password",
+                    "example": "abrakadabra123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequest"
                 }
               }
             }
           },
           "401": {
-            "description": "unautorized",
+            "description": "Login error. Email or password is wrong",
             "content": {
               "application/json": {
                 "schema": {
@@ -101,6 +176,196 @@
         }
       }
     },
+    "/auth/logout": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Logout user",
+        "description": "Brings user's token to zero",
+        "parameters": [],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful operation"
+          },
+          "401": {
+            "description": "Unautorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/users/current": {
+      "get": {
+        "tags": ["user"],
+        "summary": "Get current user",
+        "description": "Returns data of current user",
+        "parameters": [],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCurrentUserData"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unautorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/users/changeUserData": {
+      "patch": {
+        "tags": ["user"],
+        "summary": "Change user's data",
+        "description": "Returns new user name and avatar URL",
+        "parameters": [],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Object with User's new data",
+          "required": "true",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": "[]",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "User's name (new)",
+                    "example": "Polina"
+                  },
+                  "avatarImage": {
+                    "type": "file",
+                    "description": "User's avatar URL (new)"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChangeUserData"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unappropriate file type and/or size",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequest"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unautorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/subscribe": {
+      "post": {
+        "tags": ["subscribe"],
+        "summary": "Subscribe user for newletters",
+        "description": "Returns {subscription: true} if subscription attempt was succeed",
+        "parameters": [],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Letter is send",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "subscription": {
+                      "type": "Boolean",
+                      "description": "User's subscription status",
+                      "example": "true"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The intention of sending letter to user was not successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequest"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unautorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
     "/recipes/category-list": {
       "get": {
         "tags": ["recipes"],
@@ -331,7 +596,7 @@
       "post": {
         "security": [
           {
-            "Bearer": []
+            "bearerAuth": []
           }
         ],
         "tags": ["ownrecipes"],
@@ -511,38 +776,44 @@
   },
   "components": {
     "schemas": {
-      "RegistrationResponse": {
+      "AuthResponse": {
         "type": "object",
         "properties": {
           "user": {
-            "id": {
-              "type": "string",
-              "description": "User's ID",
-              "example": "644790c4f08af682d46ab758"
-            },
-            "name": {
-              "type": "string",
-              "description": "User's name",
-              "example": "Marina"
-            },
-            "email": {
-              "type": "string",
-              "description": "User's email",
-              "example": "user@example.com"
-            },
-            "avatarUrl": {
-              "type": "string",
-              "description": "User's default avatar link",
-              "example": "https://exampledomain.com/tbe6lqtuz7ki8dcxpqgh.png"
-            },
-            "subscription": {
-              "type": "boolean",
-              "description": "User's subscription status",
-              "example": "false"
-            },
-            "shoppingList": {
-              "type": "array",
-              "description": "User's list of ingredients for shopping"
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "User's ID",
+                "example": "644790c4f08af682d46ab758"
+              },
+              "name": {
+                "type": "string",
+                "description": "User's name",
+                "example": "Marina"
+              },
+              "email": {
+                "type": "string",
+                "description": "User's email",
+                "example": "user@example.com"
+              },
+              "avatarUrl": {
+                "type": "string",
+                "description": "User's avatar URL",
+                "example": "https://exampledomain.com/tbe6lqtuz7ki8dcxpqgh.png"
+              },
+              "subscription": {
+                "type": "boolean",
+                "description": "User's subscription status",
+                "example": "false"
+              },
+              "shoppingList": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "User's list of ingredients for shopping"
+              }
             }
           },
           "token": {
@@ -552,6 +823,73 @@
         }
       },
 
+      "GetCurrentUserData": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "User's ID",
+            "example": "644790c4f08af682d46ab758"
+          },
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "Marina"
+          },
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "example": "user@example.com"
+          },
+          "avatarUrl": {
+            "type": "string",
+            "description": "User's avatar URL",
+            "example": "https://exampledomain.com/tbe6lqtuz7ki8dcxpqgh.png"
+          },
+          "subscription": {
+            "type": "boolean",
+            "description": "User's subscription status",
+            "example": "false"
+          },
+          "shoppingList": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "User's list of ingredients for shopping"
+          },
+          "numberOfVisits": {
+            "type": "integer",
+            "description": "Numbers of user's site's vizit",
+            "example": "5"
+          },
+          "numberOfOwnRecipes": {
+            "type": "integer",
+            "description": "Numbers of recipes added by user to site",
+            "example": "5"
+          },
+          "numberOfFavorites": {
+            "type": "integer",
+            "description": "Numbers of recipes added by user to favorites",
+            "example": "5"
+          }
+        }
+      },
+
+      "ChangeUserData": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name (new)",
+            "example": "Polina"
+          },
+          "avatarUrl": {
+            "type": "file",
+            "description": "User's avatar URL (new)"
+          }
+        }
+      },
       "Category-list": {
         "type": "array",
         "items": {
@@ -788,6 +1126,24 @@
           "message": {
             "type": "string",
             "example": "Not authorized"
+          }
+        }
+      },
+      "BadRequest": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "\"email\" is required"
+          }
+        }
+      },
+      "Conflict": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "This user is already exist"
           }
         }
       }

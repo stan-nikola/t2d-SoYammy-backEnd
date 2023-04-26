@@ -54,6 +54,21 @@ const userSchema = new Schema({
     default: [],
   },
 
+  numberOfVisits: {
+    type: Number,
+    default: 0,
+  },
+
+  numberOfOwnRecipes: {
+    type: Number,
+    default: 0,
+  },
+
+  numberOfFavorites: {
+    type: Number,
+    default: 0,
+  },
+
   token: {
     type: String,
     default: null,

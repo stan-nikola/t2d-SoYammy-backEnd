@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const { RequestError } = require("../../helpers");
 const { Recipe } = require("../../models");
 const { ParamsConflictError } = require("../../helpers/errors");
+const { User } = require("../../models/userModel");
 
 const addToFavoriteRecipe = async (req) => {
   const { recipeId } = req.params;
@@ -24,13 +25,19 @@ const addToFavoriteRecipe = async (req) => {
     );
   }
 
-  return Recipe.findByIdAndUpdate(
+  const result = await Recipe.findByIdAndUpdate(
     recipeId,
     {
       favorites: [...favorites, { userId }],
     },
     { new: true }
   );
+
+  let { _id: id, numberOfFavorites } = req.user;
+  numberOfFavorites += 1;
+  await User.findByIdAndUpdate(id, { numberOfFavorites }, { new: true });
+
+  return result;
 };
 
 module.exports = { addToFavoriteRecipe };

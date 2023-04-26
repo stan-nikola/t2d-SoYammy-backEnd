@@ -10,6 +10,9 @@ const userLoginController = async (req, res) => {
     avatarUrl,
     subscription,
     shoppingList,
+    numberOfVisits,
+    numberOfOwnRecipes,
+    numberOfFavorites,
   } = result;
   // console.log("token=", token);
   // console.log("result=", result);
@@ -21,6 +24,9 @@ const userLoginController = async (req, res) => {
       avatarUrl,
       subscription,
       shoppingList,
+      numberOfVisits,
+      numberOfOwnRecipes,
+      numberOfFavorites,
     },
     token,
   });

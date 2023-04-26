@@ -13,9 +13,17 @@ const loginUser = async (requestBody) => {
   if (!user || !bcrypt.compareSync(password, user.password)) {
     throw new LoginError("Login error. Email or password is wrong");
   }
+
+  let { numberOfVisits } = user;
+  numberOfVisits += 1;
+
   const payload = { id: user._id };
   const token = jwt.sign(payload, SECRET_KEY); // ДОБАВИТЬ СРОК ДЕЙСТВИЯ ТОКЕНА: { expiresIn: "1d" }
-  return await User.findByIdAndUpdate(user._id, { token }, { new: true });
+  return await User.findByIdAndUpdate(
+    user._id,
+    { numberOfVisits, token },
+    { new: true }
+  );
 };
 
 module.exports = {
