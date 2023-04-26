@@ -13,12 +13,7 @@ const joiRecipeSchema = Joi.object({
   description: Joi.string().min(3).max(3000).required(),
   time: Joi.string().min(1).max(10).required(),
   tags: Joi.array().items(Joi.string()),
-  ingredients: Joi.array().items(
-    Joi.object().keys({
-      id: Joi.string(),
-      measure: Joi.string().min(3).max(30).required(),
-    })
-  ),
+  ingredients: Joi.string(),
 }).options({ abortEarly: true });
 
 const recipeSchema = new Schema(
