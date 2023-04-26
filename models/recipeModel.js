@@ -11,7 +11,7 @@ const joiRecipeSchema = Joi.object({
   area: Joi.string(),
   instructions: Joi.string().min(3).max(3000).required(),
   description: Joi.string().min(3).max(3000).required(),
-  time: Joi.string().min(1).max(5).required(),
+  time: Joi.string().min(1).max(10).required(),
   tags: Joi.array().items(Joi.string()),
   ingredients: Joi.array().items(
     Joi.object().keys({
