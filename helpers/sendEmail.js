@@ -13,6 +13,7 @@ const sendEmail = async (data) => {
     return true;
   } catch (error) {
     console.error(error);
+    return false;
   }
 };
 

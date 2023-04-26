@@ -9,22 +9,26 @@
     "description": "Live page The SoYummy  App",
     "url": "https://natashafedorova.github.io/so-yummy/"
   },
+  "consumes": ["application/json", "multipart/form-data"],
+  "produces": ["application/json"],
   "servers": [
     {
       "url": "https://t2d-soyammy-backend.onrender.com/api"
     }
   ],
-
   "tags": [
     {
       "name": "auth",
-      "description": "User Authorization"
+      "description": "User authorization"
     },
     {
       "name": "user",
-      "description": "Operations about user"
+      "description": "Operations with user"
     },
-
+    {
+      "name": "subscribe",
+      "description": "Subscribe user for newsletters"
+    },
     {
       "name": "recipes",
       "description": "Access to recipe"
@@ -44,15 +48,344 @@
     {
       "name": "popular-recipe",
       "description": "Access to popular recipes"
+    },
+    {
+      "name": "shoppinglist",
+      "description": "Access to user shoppinglist"
     }
   ],
   "paths": {
+    "/auth/register": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Register new user",
+        "description": "Returns just-registered user object",
+        "parameters": [],
+        "requestBody": {
+          "description": "Registration's object",
+          "required": "true",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": "[name, email, password]",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "User's name",
+                    "example": "Marina"
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "User's email",
+                    "example": "user@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "User's password",
+                    "example": "abrakadabra123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequest"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Conflict"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Login user",
+        "description": "Returns user object",
+        "parameters": [],
+        "requestBody": {
+          "description": "User's object",
+          "required": "true",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": "[email, password]",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "User's email",
+                    "example": "user@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "User's password",
+                    "example": "abrakadabra123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequest"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Login error. Email or password is wrong",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Logout user",
+        "description": "Brings user's token to zero",
+        "parameters": [],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful operation"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/current": {
+      "get": {
+        "tags": ["user"],
+        "summary": "Get current user",
+        "description": "Returns data of current user",
+        "parameters": [],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCurrentUserData"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/users/changeUserData": {
+      "patch": {
+        "tags": ["user"],
+        "summary": "Change user's data",
+        "description": "Returns new user name and avatar URL",
+        "parameters": [],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Object with User's new data",
+          "required": "true",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": "[]",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "User's name (new)",
+                    "example": "Polina"
+                  },
+                  "avatarImage": {
+                    "type": "file",
+                    "description": "User's avatar URL (new)"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChangeUserData"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unappropriate file type and/or size",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequest"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unautorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/subscribe": {
+      "post": {
+        "tags": ["subscribe"],
+        "summary": "Subscribe user for newsletters",
+        "description": "Returns {subscription: true} if subscription attempt was succeed",
+        "parameters": [],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Letter is send",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "subscription": {
+                      "type": "Boolean",
+                      "description": "User's subscription status",
+                      "example": "true"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The intention of sending letter to user was not successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequest"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/recipes/category-list": {
       "get": {
         "tags": ["recipes"],
-        "summary": "Returns recipes categoty list",
+        "summary": "Returns recipes category list",
         "description": "Returns array of ingredients",
-        "security": [{ "Bearer": [] }],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "successful operation",
@@ -82,7 +415,11 @@
         "tags": ["recipes"],
         "summary": "Returns recipes by category to the main page",
         "description": "Returns an array of recipes sorted by category as objects.",
-        "security": [{ "Bearer": [] }],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "successful operation",
@@ -107,12 +444,16 @@
         }
       }
     },
-    "/category/{category}": {
+    "/recipes/category/{category}": {
       "get": {
         "tags": ["recipes"],
         "summary": "Returns recipes by category",
         "description": "Returns an object that consists of an array of recipes of the specified category and the total number of recipes.",
-        "security": [{ "Bearer": [] }],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -125,14 +466,14 @@
           {
             "in": "query",
             "name": "page",
-            "type": "intager",
+            "type": "integer",
             "description": "page number",
             "example": 1
           },
           {
             "in": "query",
             "name": "limit",
-            "type": "intager",
+            "type": "integer",
             "description": "recipes quantity by one page",
             "example": 8
           }
@@ -143,7 +484,256 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Main-page"
+                  "$ref": "#/components/schemas/CategoryById"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recipes/{id}": {
+      "get": {
+        "tags": ["recipes"],
+        "summary": "Returns recipes by id",
+        "description": "Returns an object with information about recipe",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "description": "recipe id",
+            "example": "640cd5ac2d9fecf12e8897f5"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/recipeById"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "message",
+                      "example": "Recipe with id: 640cd5ac2d9fecf12e8897a5 not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recipes/search": {
+      "get": {
+        "tags": ["recipes"],
+        "summary": "Returns recipes by search query",
+        "description": "Returns an object with information about recipe",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "title",
+            "type": "string",
+            "description": "search query",
+            "example": "Seafood"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryById"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "message",
+                      "example": "Recipe with id: 640cd5ac2d9fecf12e8897a5 not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/shoppinglist": {
+      "get": {
+        "tags": ["shoppinglist"],
+        "summary": "Returns user shopping list",
+        "description": "Returns an object with information about shoppinglist",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ShoppingList"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["shoppinglist"],
+        "summary": "Add to shoppinglist",
+        "description": "Add ingredient in the user shopping list",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Description of the ingredient",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddIngredientToShoppingList"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ShoppingList"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["shoppinglist"],
+        "summary": "Remove ingredient from the shoppinglist",
+        "description": "Remove ingredient from the user shopping list by _id",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "_id of the ingredient",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["_id"],
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "description": "ingredient id",
+                    "example": "3931be8c-21ab-4bff-baf1-fe3d020ce677"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ShoppingList"
                 }
               }
             }
@@ -201,7 +791,11 @@
         "tags": ["ingredients"],
         "summary": "Get recipe by ingredient name ",
         "description": "\n\n\nExtras:\n- Example: ingredients?query=cucumber&page=1&limit=3 \n- added the totalCount field to each object, which shows the total number of objects in the collection upon request",
-
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "query",
@@ -276,7 +870,7 @@
     },
     "/ownrecipes": {
       "post": {
-        "security": [{ "Bearer": [] }],
+        "security": [{ "bearerAuth": [] }],
         "tags": ["ownrecipes"],
         "summary": "Add own recipe",
         "description": "Returns an object with new added recipe.",
@@ -387,7 +981,7 @@
         }
       },
       "get": {
-        "security": [{ "Bearer": [] }],
+        "security": [{ "bearerAuth": [] }],
         "tags": ["ownrecipes"],
         "summary": "Get own recipe",
         "description": "\n\n\nExtras:\n- Example: ownRecipes/?page=1&limit=6  \n- added the totalCount field to each object, which shows the total number of objects in the collection upon request",
@@ -439,7 +1033,7 @@
     },
     "/ownrecipes/{recipeId}": {
       "delete": {
-        "security": [{ "Bearer": [] }],
+        "security": [{ "bearerAuth": [] }],
         "tags": ["ownrecipes"],
         "summary": "Delete own recipe by recipe id",
         "description": "",
@@ -503,7 +1097,7 @@
     },
     "/ownrecipes/favorite/{recipeId}": {
       "put": {
-        "security": [{ "Bearer": [] }],
+        "security": [{ "bearerAuth": [] }],
         "tags": ["ownrecipes/favorite"],
         "summary": "Add recipe to favorite",
         "description": "Returns an object with added to favorite recipe.",
@@ -590,7 +1184,7 @@
         }
       },
       "patch": {
-        "security": [{ "Bearer": [] }],
+        "security": [{ "bearerAuth": [] }],
         "tags": ["ownrecipes/favorite"],
         "summary": "Delete recipe from favorite",
         "description": "Returns message.",
@@ -685,7 +1279,7 @@
     },
     "/ownrecipes/favorite/": {
       "get": {
-        "security": [{ "Bearer": [] }],
+        "security": [{ "bearerAuth": [] }],
         "tags": ["ownrecipes/favorite"],
         "summary": "Get user favorites recipes",
         "description": "\n\n\nExtras:\n- Example: ownRecipes/favorite/?page=1&limit=6  \n- added the totalCount field to each object, which shows the total number of objects in the collection upon request",
@@ -737,7 +1331,7 @@
     },
     "/popular-recipes": {
       "get": {
-        "security": [{ "Bearer": [] }],
+        "security": [{ "bearerAuth": [] }],
         "tags": ["popular-recipe"],
         "summary": "Get popular recipes",
         "description": "\n\n\nExtras:\n- Example: popular-recipes/?page=1&limit=6  \n- added the totalCount field to each object, which shows the total number of objects in the collection upon request",
@@ -791,6 +1385,135 @@
 
   "components": {
     "schemas": {
+      "AuthResponse": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "User's ID",
+                "example": "644790c4f08af682d46ab758"
+              },
+              "name": {
+                "type": "string",
+                "description": "User's name",
+                "example": "Marina"
+              },
+              "email": {
+                "type": "string",
+                "description": "User's email",
+                "example": "user@example.com"
+              },
+              "avatarUrl": {
+                "type": "string",
+                "description": "User's avatar URL",
+                "example": "https://exampledomain.com/tbe6lqtuz7ki8dcxpqgh.png"
+              },
+              "subscription": {
+                "type": "boolean",
+                "description": "User's subscription status",
+                "example": "false"
+              },
+              "shoppingList": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "User's list of ingredients for shopping"
+              },
+              "numberOfVisits": {
+                "type": "integer",
+                "description": "Numbers of user's site's visit",
+                "example": "5"
+              },
+              "numberOfOwnRecipes": {
+                "type": "integer",
+                "description": "Numbers of recipes added by user to site",
+                "example": "7"
+              },
+              "numberOfFavorites": {
+                "type": "integer",
+                "description": "Numbers of recipes added by user to favorites",
+                "example": "5"
+              }
+            }
+          },
+          "token": {
+            "type": "string",
+            "description": "User's authentication token"
+          }
+        }
+      },
+
+      "GetCurrentUserData": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "User's ID",
+            "example": "644790c4f08af682d46ab758"
+          },
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "Marina"
+          },
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "example": "user@example.com"
+          },
+          "avatarUrl": {
+            "type": "string",
+            "description": "User's avatar URL",
+            "example": "https://exampledomain.com/tbe6lqtuz7ki8dcxpqgh.png"
+          },
+          "subscription": {
+            "type": "boolean",
+            "description": "User's subscription status",
+            "example": "false"
+          },
+          "shoppingList": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "User's list of ingredients for shopping"
+          },
+          "numberOfVisits": {
+            "type": "integer",
+            "description": "Numbers of user's site's visit",
+            "example": "5"
+          },
+          "numberOfOwnRecipes": {
+            "type": "integer",
+            "description": "Numbers of recipes added by user to site",
+            "example": "5"
+          },
+          "numberOfFavorites": {
+            "type": "integer",
+            "description": "Numbers of recipes added by user to favorites",
+            "example": "5"
+          }
+        }
+      },
+
+      "ChangeUserData": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name (new)",
+            "example": "Polina"
+          },
+          "avatarUrl": {
+            "type": "file",
+            "description": "User's avatar URL (new)"
+          }
+        }
+      },
       "Category-list": {
         "type": "array",
         "items": {
@@ -910,6 +1633,121 @@
         }
       },
       "CategoryById": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string",
+              "description": "Unique identifier for the recipe",
+              "example": "640cd5ac2d9fecf12e8897f5"
+            },
+            "title": {
+              "type": "string",
+              "description": "Title of the recipe",
+              "example": "Mediterranean Pasta Salad"
+            },
+            "category": {
+              "type": "string",
+              "description": "Category of the recipe",
+              "example": "Seafood"
+            },
+            "area": {
+              "type": "string",
+              "description": "Area where the recipe is from",
+              "example": "Italian"
+            },
+            "instructions": {
+              "type": "string",
+              "description": "Instructions for making the recipe",
+              "example": "Bring a large saucepan of salted water to the boil\r\nAdd the pasta, stir once and cook for about 10 minutes or as directed on the packet.\r\nMeanwhile, wash the tomatoes and cut into quarters. Slice the olives. Wash the basil.\r\nPut the tomatoes into a salad bowl and tear the basil leaves over them. Add a tablespoon of olive oil and mix.\r\nWhen the pasta is ready, drain into a colander and run cold water over it to cool it quickly.\r\nToss the pasta into the salad bowl with the tomatoes and basil.\r\nAdd the sliced olives, drained mozzarella balls, and chunks of tuna. Mix well and let the salad rest for at least half an hour to allow the flavours to mingle.\r\nSprinkle the pasta with a generous grind of black pepper and drizzle with the remaining olive oil just before serving."
+            },
+            "description": {
+              "type": "string",
+              "description": "Description of the recipe",
+              "example": "A salad made with pasta, vegetables (such as tomatoes, cucumbers, and olives), feta cheese, and a dressing made with olive oil and lemon juice."
+            },
+            "thumb": {
+              "type": "string",
+              "description": "Thumbnail image URL for the recipe",
+              "example": "https://www.themealdb.com/images/media/meals/wvqpwt1468339226.jpg"
+            },
+            "preview": {
+              "type": "string",
+              "description": "Preview image URL for the recipe",
+              "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560402/mwtf7uqrnsxvlpjqtslc.jpg"
+            },
+            "time": {
+              "type": "string",
+              "description": "Total cooking time for the recipe",
+              "example": "27"
+            },
+            "youtube": {
+              "type": "string",
+              "description": "YouTube video URL for the recipe",
+              "example": "https://www.youtube.com/watch?v=e52IL8zYmaE"
+            },
+            "tags": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "example": "Pasta"
+              },
+              "description": "Tags for the recipe",
+              "example": ["Pasta", "Baking"]
+            },
+            "createdAt": {
+              "type": "string",
+              "description": "Date and time when the recipe was created",
+              "example": "2023-03-11T19:25:33.240Z"
+            },
+            "updatedAt": {
+              "type": "string",
+              "description": "Date and time when the recipe was last updated",
+              "example": "2023-04-14T20:02:28.085Z"
+            },
+            "ingredients": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "description": "Unique identifier for the ingredient",
+                    "example": "640c2dd963a319ea671e3724"
+                  },
+                  "measure": {
+                    "type": "string",
+                    "description": "Measurement unit for the ingredient",
+                    "example": "200 g"
+                  }
+                }
+              },
+              "description": "Ingredients required for the recipe"
+            },
+            "favorites": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "userId": {
+                    "type": "string",
+                    "description": "Unique identifier for the user",
+                    "example": "644160cec6c003bd4a5d5f1c"
+                  }
+                }
+              },
+              "description": "Users whose added recipe to favorite"
+            },
+            "totalCount": {
+              "type": "intager",
+              "description": "Total number of recipes by category",
+              "example": "64"
+            }
+          }
+        }
+      },
+      "recipeById": {
         "type": "object",
         "properties": {
           "_id": {
@@ -1019,6 +1857,89 @@
               }
             },
             "description": "Ingredients required for the recipe"
+          },
+          "favorites": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "userId": {
+                  "type": "string",
+                  "description": "Unique identifier for the user",
+                  "example": "644160cec6c003bd4a5d5f1c"
+                }
+              }
+            },
+            "description": "Users whose added recipe to favorite"
+          }
+        }
+      },
+      "ShoppingList": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "image": {
+              "type": "string",
+              "description": "Ingredient`s photo",
+              "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564124/zzxbvvvye3pnooygfdgg.png"
+            },
+            "ingredientId": {
+              "type": "string",
+              "description": "Unique identifier for the ingredient from list of ingredients",
+              "example": "640c2dd963a319ea671e365d"
+            },
+            "recipeID": {
+              "type": "string",
+              "description": "Unique identifier for the recipe",
+              "example": "640cd5ac2d9fecf12e88984e"
+            },
+            "title": {
+              "type": "string",
+              "description": "Name of the ingredient",
+              "example": "Beef"
+            },
+            "weight": {
+              "type": "string",
+              "description": "Amout of an ingredient",
+              "example": "1kg"
+            },
+            "_id": {
+              "type": "string",
+              "description": "Unique identifier for the ingredient in the shoppinglist",
+              "example": "3931be8c-21ab-4bff-baf1-fe3d020ce677"
+            }
+          },
+          "description": "List of ingridients"
+        }
+      },
+      "AddIngredientToShoppingList": {
+        "type": "object",
+        "properties": {
+          "image": {
+            "type": "string",
+            "description": "Ingredient`s photo",
+            "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564124/zzxbvvvye3pnooygfdgg.png"
+          },
+          "ingredientId": {
+            "type": "string",
+            "description": "Unique identifier for the ingredient from list of ingredients",
+            "example": "640c2dd963a319ea671e365d"
+          },
+          "recipeID": {
+            "type": "string",
+            "description": "Unique identifier for the recipe",
+            "example": "640cd5ac2d9fecf12e88984e"
+          },
+          "title": {
+            "type": "string",
+            "description": "Name of the ingredient",
+            "example": "Beef"
+          },
+          "weight": {
+            "type": "string",
+            "description": "Amout of an ingredient",
+            "example": "1kg"
           }
         }
       },
@@ -1057,15 +1978,6 @@
               "description": "Thumbnail image URL for the ingredient",
               "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564797/jgwujfs7lp8bvymction.png"
             }
-          }
-        }
-      },
-      "Unauthorized": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "example": "Not authorized"
           }
         }
       },
@@ -1274,13 +2186,33 @@
             "totalCount": { "type": "number", "example": 12 }
           }
         }
-      }
-    },
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer",
-        "bearerFormat": "JWT"
+      },
+      "Unauthorized": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Not authorized"
+          }
+        }
+      },
+      "Conflict": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "This user is already exist"
+          }
+        }
+      },
+      "BadRequest": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "\"email\" is required"
+          }
+        }
       }
     }
   },

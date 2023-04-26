@@ -12,6 +12,9 @@ const userRegistrationController = async (req, res) => {
     token,
     subscription,
     shoppingList,
+    numberOfVisits,
+    numberOfOwnRecipes,
+    numberOfFavorites,
   } = result;
   return res.status(201).json({
     user: {
@@ -21,6 +24,9 @@ const userRegistrationController = async (req, res) => {
       avatarUrl,
       subscription,
       shoppingList,
+      numberOfVisits,
+      numberOfOwnRecipes,
+      numberOfFavorites,
     },
     token,
   });

@@ -12,6 +12,9 @@ const getCurrentUserController = async (req, res) => {
     avatarUrl,
     subscription,
     shoppingList,
+    numberOfVisits,
+    numberOfOwnRecipes,
+    numberOfFavorites,
   } = req.user;
   return res.status(200).json({
     id,
@@ -20,6 +23,9 @@ const getCurrentUserController = async (req, res) => {
     avatarUrl,
     subscription,
     shoppingList,
+    numberOfVisits,
+    numberOfOwnRecipes,
+    numberOfFavorites,
   });
 };
 

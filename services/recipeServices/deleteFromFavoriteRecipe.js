@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const { RequestError } = require("../../helpers");
 const { Recipe } = require("../../models");
 const { ParamsConflictError } = require("../../helpers/errors");
+const { User } = require("../../models/userModel");
 
 const deleteFromFavoriteRecipe = async (req) => {
   const { recipeId } = req.params;
@@ -22,7 +23,16 @@ const deleteFromFavoriteRecipe = async (req) => {
     throw new ParamsConflictError("Recipe are not in favorites");
   }
 
-  return Recipe.update({ _id: recipeId }, { $pull: { favorites: { userId } } });
+  const result = Recipe.update(
+    { _id: recipeId },
+    { $pull: { favorites: { userId } } }
+  );
+
+  let { _id: id, numberOfFavorites } = req.user;
+  numberOfFavorites -= 1;
+  await User.findByIdAndUpdate(id, { numberOfFavorites }, { new: true });
+
+  return result;
 };
 
 module.exports = { deleteFromFavoriteRecipe };

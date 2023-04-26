@@ -1,7 +1,7 @@
 const cloudinary = require("cloudinary").v2;
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const multer = require("multer");
-const { FileSizeError } = require("../../helpers/errors");
+const { FileError } = require("../../helpers/errors");
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
@@ -18,13 +18,13 @@ const storage = new CloudinaryStorage({
     const [, ext] = file.mimetype.split("/");
 
     if (!allowedFormats.includes(ext)) {
-      throw new FileSizeError(
+      throw new FileError(
         `Upload file extension ${[...allowedFormats].join(", ")} expected`
       );
     }
 
     if (req.headers["content-length"] > uploadFileMaxSize) {
-      throw new FileSizeError(
+      throw new FileError(
         `This file is too large. The proper file size must be under ${
           uploadFileMaxSize / 1024 / 1024
         } Mb`

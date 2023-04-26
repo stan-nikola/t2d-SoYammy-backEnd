@@ -15,7 +15,7 @@ class RegistrationConflict extends SoYummyAppError {
 class InvalidEmail extends SoYummyAppError {
   constructor(message) {
     super(message);
-    this.status = 401;
+    this.status = 400;
   }
 }
 class LoginError extends SoYummyAppError {
@@ -32,10 +32,10 @@ class NotAuthorizedError extends SoYummyAppError {
   }
 }
 
-class FileSizeError extends SoYummyAppError {
+class FileError extends SoYummyAppError {
   constructor(message) {
     super(message);
-    this.status = 401;
+    this.status = 400;
   }
 }
 
@@ -73,7 +73,7 @@ module.exports = {
   InvalidEmail,
   LoginError,
   NotAuthorizedError,
-  FileSizeError,
+  FileError,
   ValidationError,
   RequestError,
   NonExistingParamsError,
