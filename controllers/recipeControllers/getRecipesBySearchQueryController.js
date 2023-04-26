@@ -1,7 +1,7 @@
 const { getRecipesBySearchQuery } = require("../../services");
 
 const getRecipesBySearchQueryController = async (req, res, next) => {
-  let { title, page = 1, limit = 8 } = req.query;
+  let { title, page = 1, limit = 12 } = req.query;
   limit = parseInt(limit);
   const skip = (page - 1) * limit;
 
