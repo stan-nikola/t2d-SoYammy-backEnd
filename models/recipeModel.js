@@ -8,17 +8,12 @@ const joiRecipeSchema = Joi.object({
   category: Joi.string()
     .valid(...categories)
     .required(),
-  area: Joi.string(),
+  area: Joi.string().max(50),
   instructions: Joi.string().min(3).max(3000).required(),
   description: Joi.string().min(3).max(3000).required(),
-  time: Joi.string().min(1).max(5).required(),
-  tags: Joi.array().items(Joi.string()),
-  ingredients: Joi.array().items(
-    Joi.object().keys({
-      id: Joi.string(),
-      measure: Joi.string().min(3).max(30).required(),
-    })
-  ),
+  time: Joi.string().min(1).max(20).required(),
+  tags: Joi.string().max(1000),
+  ingredients: Joi.string().min(1).max(3000).required(),
 }).options({ abortEarly: true });
 
 const recipeSchema = new Schema(
@@ -36,7 +31,7 @@ const recipeSchema = new Schema(
       type: String,
     },
     instructions: {
-      type: String,
+      type: [String],
       require: [true, "Instructions is required"],
     },
     description: {
@@ -47,7 +42,6 @@ const recipeSchema = new Schema(
     preview: { type: String },
     time: { type: String, require: [true, "Time is required"] },
     youtube: { type: String },
-    tags: { type: [String] },
     ingredients: [
       {
         id: {
