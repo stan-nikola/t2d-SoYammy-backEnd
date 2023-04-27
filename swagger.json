@@ -945,9 +945,7 @@
                     }
                   },
                   "ingredients": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
+                      "type": "string",
                       "example": {
                         "id": "640c2dd963a319ea671e376c",
                         "measure": "3/4 cup"
