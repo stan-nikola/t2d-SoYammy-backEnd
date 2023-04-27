@@ -945,10 +945,16 @@
                   },
                   "ingredients": {
                     "type": "string",
-                    "example": {
-                      "id": "640c2dd963a319ea671e376c",
-                      "measure": "3/4 cup"
-                    },
+                    "example": [
+                      {
+                        "id": "640c2dd963a319ea671e376c",
+                        "measure": "3/4 cup"
+                      },
+                      {
+                        "id": "640c2dd963a319ea671e367b",
+                        "measure": "250g"
+                      }
+                    ],
 
                     "description": "Recipe ingredients"
                   }
