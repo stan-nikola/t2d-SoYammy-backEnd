@@ -25,6 +25,7 @@ app.use(express.static("tmp"));
 app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extend: true }));
 
 app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);

@@ -22,7 +22,7 @@ router.post(
   "/",
   authMiddleware,
   uploadCloud.single("recipeImage"),
-  validationMiddleware(joiRecipeSchema),
+  // validationMiddleware(joiRecipeSchema),
   asyncWrapper(addOwnRecipeController)
 );
 
