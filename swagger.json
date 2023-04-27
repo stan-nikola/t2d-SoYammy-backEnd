@@ -921,12 +921,12 @@
 
                   "instructions": {
                     "type": "string",
-                      "example": [
-                        "Lorem ipsum dolor sit amet",
-                        "Lorem ipsum dolor sit amet",
-                        "Lorem ipsum dolor sit amet"
-                      ]
-                    },
+                    "example": [
+                      "Lorem ipsum dolor sit amet",
+                      "Lorem ipsum dolor sit amet",
+                      "Lorem ipsum dolor sit amet"
+                    ],
+
                     "description": "Recipe instructions.Recipe instructions. Field min length 3 max 3000. Each line from a new row must be passed by an array element"
                   },
                   "description": {
@@ -940,17 +940,16 @@
                     "example": "30"
                   },
                   "tags": {
-                      "type": "string",
-                      "example": ["baking", "chicken", "str3"]
-                    }
+                    "type": "string",
+                    "example": ["baking", "chicken", "str3"]
                   },
                   "ingredients": {
-                      "type": "string",
-                      "example": {
-                        "id": "640c2dd963a319ea671e376c",
-                        "measure": "3/4 cup"
-                      }
+                    "type": "string",
+                    "example": {
+                      "id": "640c2dd963a319ea671e376c",
+                      "measure": "3/4 cup"
                     },
+
                     "description": "Recipe ingredients"
                   }
                 }
