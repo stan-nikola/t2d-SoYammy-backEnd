@@ -49,17 +49,12 @@ const userSchema = new Schema({
     default: false,
   },
 
-  // shoppingList: {
-  //   type: Array,
-  //   default: [],
-  // },
-
   shoppingList: [
     {
       image: {
         type: String,
       },
-      myid: {
+      ingredientId: {
         type: String,
       },
       recipeID: {
