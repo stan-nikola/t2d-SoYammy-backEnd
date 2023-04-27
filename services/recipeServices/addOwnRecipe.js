@@ -15,13 +15,11 @@ const addOwnRecipe = async (req) => {
     description,
     time,
     youtube,
-    tags,
     ingredients,
   } = req.body;
 
   const parsedIngredients = JSON.parse(ingredients);
   const parsedInstructions = JSON.parse(instructions);
-  const parsedTags = JSON.parse(tags);
 
   const newRecipe = await Recipe.create({
     title,
@@ -33,7 +31,6 @@ const addOwnRecipe = async (req) => {
     preview: imageURL || defaultImage,
     time,
     youtube,
-    tags: parsedTags,
     ingredients: parsedIngredients,
     owner: req.user.id,
   });
