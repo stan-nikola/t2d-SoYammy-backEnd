@@ -736,6 +736,23 @@
               }
             }
           },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "message",
+                      "example": "Product with id: 3931be8c-21ab-4bff-baf1-fe3d020ce677 not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
           "401": {
             "description": "Unauthorized",
             "content": {
@@ -1632,8 +1649,7 @@
                         }
                       }
                     }
-                  },
-                  "totalCount": { "type": "number", "example": 12 }
+                  }
                 }
               }
             }
