@@ -49,10 +49,33 @@ const userSchema = new Schema({
     default: false,
   },
 
-  shoppingList: {
-    type: Array,
-    default: [],
-  },
+  // shoppingList: {
+  //   type: Array,
+  //   default: [],
+  // },
+
+  shoppingList: [
+    {
+      image: {
+        type: String,
+      },
+      myid: {
+        type: String,
+      },
+      recipeID: {
+        type: String,
+      },
+      title: {
+        type: String,
+      },
+      weight: {
+        type: String,
+      },
+      _id: {
+        type: String,
+      },
+    },
+  ],
 
   numberOfVisits: {
     type: Number,
