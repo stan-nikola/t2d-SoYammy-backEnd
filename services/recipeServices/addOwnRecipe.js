@@ -19,6 +19,10 @@ const addOwnRecipe = async (req) => {
     ingredients,
   } = req.body;
 
+  console.log("ingredients====>", typeof ingredients);
+  console.log("instructions", typeof instructions);
+  console.log("tags", typeof tags);
+
   const parsedIngredients = JSON.parse(ingredients);
   const parsedInstructions = JSON.parse(instructions);
   const parsedTags = JSON.parse(tags);
