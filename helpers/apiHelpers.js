@@ -7,9 +7,11 @@ const asyncWrapper = (controller) => {
 };
 
 const errorHandler = (err, req, res, next) => {
+  console.log(err);
   if (err instanceof SoYummyAppError) {
     return res.status(err.status).json({ message: err.message });
   }
+
   res.status(500).json({ message: err.message });
 };
 
