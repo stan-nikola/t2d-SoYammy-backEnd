@@ -939,10 +939,6 @@
                     "description": "Recipe preparing time ",
                     "example": "30"
                   },
-                  "tags": {
-                    "type": "string",
-                    "example": ["baking", "chicken", "str3"]
-                  },
                   "ingredients": {
                     "type": "string",
                     "example": [
