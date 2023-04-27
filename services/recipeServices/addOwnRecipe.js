@@ -15,7 +15,7 @@ const addOwnRecipe = async (req) => {
     description,
     time,
     youtube,
-    tags = [],
+    tags = [""],
     ingredients,
   } = req.body;
 
