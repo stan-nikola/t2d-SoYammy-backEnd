@@ -8,7 +8,7 @@ const joiRecipeSchema = Joi.object({
   category: Joi.string()
     .valid(...categories)
     .required(),
-  area: Joi.string(),
+  area: Joi.string().max(50),
   instructions: Joi.string().min(3).max(3000).required(),
   description: Joi.string().min(3).max(3000).required(),
   time: Joi.string().min(1).max(20).required(),

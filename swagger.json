@@ -920,16 +920,13 @@
                   },
 
                   "instructions": {
-                    "type": "array",
-                    "oneOf": {
-                      "type": "string",
+                    "type": "string",
                       "example": [
                         "Lorem ipsum dolor sit amet",
                         "Lorem ipsum dolor sit amet",
                         "Lorem ipsum dolor sit amet"
                       ]
                     },
-
                     "description": "Recipe instructions.Recipe instructions. Field min length 3 max 3000. Each line from a new row must be passed by an array element"
                   },
                   "description": {
@@ -943,8 +940,6 @@
                     "example": "30"
                   },
                   "tags": {
-                    "type": "array",
-                    "items": {
                       "type": "string",
                       "example": ["baking", "chicken", "str3"]
                     }
