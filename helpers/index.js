@@ -3,7 +3,7 @@ const categories = require("./categories");
 
 const {
   RegistrationConflict,
-  InvalidEmail,
+  InvalidRegistrationData,
   LoginError,
   NotAuthorizedError,
   FileError,
@@ -13,6 +13,8 @@ const {
   ParamsAddConflictError,
 } = require("./errors");
 
+const { checkPasswordValidation } = require("./passwordValidator");
+
 const { createEmailBody } = require("../helpers/createEmailBody");
 const { sendEmail } = require("../helpers/sendEmail");
 
@@ -20,11 +22,12 @@ module.exports = {
   asyncWrapper,
   errorHandler,
 
+  checkPasswordValidation,
   createEmailBody,
   sendEmail,
 
   RegistrationConflict,
-  InvalidEmail,
+  InvalidRegistrationData,
   LoginError,
   NotAuthorizedError,
   FileError,
