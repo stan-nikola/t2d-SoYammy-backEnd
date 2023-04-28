@@ -13,7 +13,7 @@
   "produces": ["application/json"],
   "servers": [
     {
-      "url": "https://t2d-soyammy-backend.onrender.com/api"
+      "url": "http://localhost:3000/api"
     }
   ],
   "tags": [
@@ -83,7 +83,7 @@
                   "password": {
                     "type": "string",
                     "description": "User's password",
-                    "example": "abrakadabra123"
+                    "example": "Abrakadabra&123"
                   }
                 }
               }
@@ -147,7 +147,7 @@
                   "password": {
                     "type": "string",
                     "description": "User's password",
-                    "example": "abrakadabra123"
+                    "example": "Abrakadabra&123"
                   }
                 }
               }
@@ -1430,6 +1430,11 @@
                 "description": "User's avatar URL",
                 "example": "https://exampledomain.com/tbe6lqtuz7ki8dcxpqgh.png"
               },
+              "lastVisit": {
+                "type": "string",
+                "description": "User's last visit date",
+                "example": "28.04.2023"
+              },
               "subscription": {
                 "type": "boolean",
                 "description": "User's subscription status",
@@ -1438,7 +1443,39 @@
               "shoppingList": {
                 "type": "array",
                 "items": {
-                  "type": "string"
+                  "type": "object",
+                  "properties": {
+                    "image": {
+                      "type": "string",
+                      "description": "Ingredient's image URL",
+                      "example": "https://exampledomain.com/tbe6lqtuz7ki8dcxpqgh.png"
+                    },
+                    "ingredientId": {
+                      "type": "string",
+                      "description": "Ingredient's ID",
+                      "example": "644790c4f08af682d46ab758"
+                    },
+                    "recipeID": {
+                      "type": "string",
+                      "description": "ID of Recipe, which uses this ingredient",
+                      "example": "644790c4f08af682d46ab758"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "Ingredient's name",
+                      "example": "cucumber"
+                    },
+                    "weight": {
+                      "type": "string",
+                      "description": "Ingredient's quantity",
+                      "example": "2 tbls"
+                    },
+                    "_id": {
+                      "type": "string",
+                      "description": "Ingredient's ID in Shopping list",
+                      "example": "7c7db48d-7e34-4fbd-90f0-094a1f333cd7"
+                    }
+                  }
                 },
                 "description": "User's list of ingredients for shopping"
               },
@@ -1497,7 +1534,39 @@
           "shoppingList": {
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "object",
+              "properties": {
+                "image": {
+                  "type": "string",
+                  "description": "Ingredient's image URL",
+                  "example": "https://exampledomain.com/tbe6lqtuz7ki8dcxpqgh.png"
+                },
+                "ingredientId": {
+                  "type": "string",
+                  "description": "Ingredient's ID",
+                  "example": "644790c4f08af682d46ab758"
+                },
+                "recipeID": {
+                  "type": "string",
+                  "description": "ID of Recipe, which uses this ingredient",
+                  "example": "644790c4f08af682d46ab758"
+                },
+                "title": {
+                  "type": "string",
+                  "description": "Ingredient's name",
+                  "example": "cucumber"
+                },
+                "weight": {
+                  "type": "string",
+                  "description": "Ingredient's quantity",
+                  "example": "2 tbls"
+                },
+                "_id": {
+                  "type": "string",
+                  "description": "Ingredient's ID in Shopping list",
+                  "example": "7c7db48d-7e34-4fbd-90f0-094a1f333cd7"
+                }
+              }
             },
             "description": "User's list of ingredients for shopping"
           },
@@ -1518,7 +1587,6 @@
           }
         }
       },
-
       "ChangeUserData": {
         "type": "object",
         "properties": {
@@ -1533,6 +1601,7 @@
           }
         }
       },
+
       "Category-list": {
         "type": "array",
         "items": {

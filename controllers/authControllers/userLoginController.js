@@ -8,20 +8,21 @@ const userLoginController = async (req, res) => {
     email,
     token,
     avatarUrl,
+    lastVisit,
     subscription,
     shoppingList,
     numberOfVisits,
     numberOfOwnRecipes,
     numberOfFavorites,
   } = result;
-  // console.log("token=", token);
-  // console.log("result=", result);
+
   return res.status(200).json({
     user: {
       id,
       name,
       email,
       avatarUrl,
+      lastVisit,
       subscription,
       shoppingList,
       numberOfVisits,

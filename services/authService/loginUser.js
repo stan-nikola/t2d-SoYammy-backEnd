@@ -1,7 +1,7 @@
 require("dotenv").config();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { User } = require("../../models/userModel");
+const { User } = require("../../models");
 const { LoginError } = require("../../helpers");
 
 const SECRET_KEY = process.env.JWT_SECRET;
@@ -14,14 +14,17 @@ const loginUser = async (requestBody) => {
     throw new LoginError("Login error. Email or password is wrong");
   }
 
-  let { numberOfVisits } = user;
-  numberOfVisits += 1;
+  let { numberOfVisits, lastVisit } = user;
+  const today = new Date().toLocaleDateString();
+  if (today !== lastVisit) {
+    numberOfVisits += 1;
+  }
 
   const payload = { id: user._id };
   const token = jwt.sign(payload, SECRET_KEY); // ДОБАВИТЬ СРОК ДЕЙСТВИЯ ТОКЕНА: { expiresIn: "1d" }
   return await User.findByIdAndUpdate(
     user._id,
-    { numberOfVisits, token },
+    { numberOfVisits, lastVisit: today, token },
     { new: true }
   );
 };

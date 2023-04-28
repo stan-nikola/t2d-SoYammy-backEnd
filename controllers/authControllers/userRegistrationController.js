@@ -1,14 +1,14 @@
 const { registerUser } = require("../../services");
 
 const userRegistrationController = async (req, res) => {
-  console.log("Client IP =", req.ip);
-
+  // console.log("Client IP =", req.ip);
   const result = await registerUser(req.body);
   const {
     _id: id,
     name,
     email,
     avatarUrl,
+    lastVisit,
     token,
     subscription,
     shoppingList,
@@ -22,6 +22,7 @@ const userRegistrationController = async (req, res) => {
       name,
       email,
       avatarUrl,
+      lastVisit,
       subscription,
       shoppingList,
       numberOfVisits,
