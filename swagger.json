@@ -1210,10 +1210,10 @@
         "parameters": [
           {
             "in": "path",
-            "name": "ID of the recipe that needs to be deleted from favorites",
+            "name": "recipeId",
             "required": true,
             "type": "string",
-            "description": "recipe id",
+            "description": "ID of the recipe that needs to be deleted from favorites",
             "example": "6446b8d2a2e4f92cc28b0683"
           }
         ],
