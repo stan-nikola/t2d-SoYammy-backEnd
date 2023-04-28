@@ -1,4 +1,3 @@
-// const { getCurrentUser } = require("../../services/userService/getCurrentUser");
 const { NotAuthorizedError } = require("../../helpers");
 
 const getCurrentUserController = async (req, res) => {

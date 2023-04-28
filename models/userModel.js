@@ -2,18 +2,18 @@ const Joi = require("joi");
 const { Schema, model } = require("mongoose");
 
 const userRegistrationSchema = Joi.object({
-  name: Joi.string().required(),
+  name: Joi.string().alphanum().required(),
   email: Joi.string()
     .email({ minDomainSegments: 2, tlds: { allow: true } })
     .required(),
-  password: Joi.string().min(5).max(20).required(),
+  password: Joi.string().min(6).max(16).required(),
 });
 
 const userLoginSchema = Joi.object({
   email: Joi.string()
     .email({ minDomainSegments: 2, tlds: { allow: true } })
     .required(),
-  password: Joi.string().min(5).max(20).alphanum().required(),
+  password: Joi.string().min(6).max(16).required(),
 });
 
 // const userSubsriptionSchema = Joi.object({
@@ -44,19 +44,41 @@ const userSchema = new Schema({
       "https://res.cloudinary.com/dwqka6xc7/image/upload/v1682009445/soYummyT2D/avatars/tbe6lqtuz7ki8dcxpqgh.png",
   },
 
+  lastVisit: {
+    type: String,
+  },
+
   subscription: {
     type: Boolean,
     default: false,
   },
 
-  shoppingList: {
-    type: Array,
-    default: [],
-  },
+  shoppingList: [
+    {
+      image: {
+        type: String,
+      },
+      ingredientId: {
+        type: String,
+      },
+      recipeID: {
+        type: String,
+      },
+      title: {
+        type: String,
+      },
+      weight: {
+        type: String,
+      },
+      _id: {
+        type: String,
+      },
+    },
+  ],
 
   numberOfVisits: {
     type: Number,
-    default: 0,
+    default: 1,
   },
 
   numberOfOwnRecipes: {

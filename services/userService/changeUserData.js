@@ -1,10 +1,10 @@
-const { User } = require("../../models/userModel");
-// const { FileSizeError } = require("../../helpers");
+const { User } = require("../../models");
+// const { FileError } = require("../../helpers");
 
+// Первый способ:
+// Использует объект изменений, который содержит только то свойство, которое изменилось
 const changeUserData = async (req) => {
-  // Использует объект изменений, который содержит только то свойство, которое изменилось
   const objectOfChanges = {};
-  // console.log("objectOfChanges First=", objectOfChanges);
   if (req.body.name) {
     objectOfChanges.name = req.body.name;
   }
@@ -13,7 +13,7 @@ const changeUserData = async (req) => {
     // const fileSize = req.headers["content-length"];
     // console.log("fileSize = ", fileSize);
     // if (fileSize > properFileSize) {
-    //   throw new FileSizeError(
+    //   throw new FileError(
     //     `This file is too large. The proper file size must be under ${
     //       properFileSize / 1024 / 1024
     //     } Mb`
@@ -21,7 +21,6 @@ const changeUserData = async (req) => {
     // }
     objectOfChanges.avatarUrl = req.file.path;
   }
-  // console.log("objectOfChanges =", objectOfChanges);
   return await User.findByIdAndUpdate(
     req.user._id,
     { ...objectOfChanges },
