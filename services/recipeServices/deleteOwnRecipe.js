@@ -1,6 +1,6 @@
 const { NonExistingParamsError } = require("../../helpers");
 const { Recipe } = require("../../models");
-const { User } = require("../../models/userModel");
+// const { User } = require("../../models/userModel");
 
 const deleteOwnRecipe = async (req) => {
   const result = await Recipe.findOneAndDelete({
@@ -14,9 +14,9 @@ const deleteOwnRecipe = async (req) => {
     );
   }
 
-  let { _id: id, numberOfOwnRecipes } = req.user;
-  numberOfOwnRecipes -= 1;
-  await User.findByIdAndUpdate(id, { numberOfOwnRecipes }, { new: true });
+  // let { _id: id, numberOfOwnRecipes } = req.user;
+  // numberOfOwnRecipes -= 1;
+  // await User.findByIdAndUpdate(id, { numberOfOwnRecipes }, { new: true });
 
   return result;
 };

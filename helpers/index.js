@@ -19,10 +19,8 @@ const { sendEmail } = require("../helpers/sendEmail");
 module.exports = {
   asyncWrapper,
   errorHandler,
-
   createEmailBody,
   sendEmail,
-
   RegistrationConflict,
   InvalidEmail,
   LoginError,
