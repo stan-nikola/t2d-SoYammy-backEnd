@@ -13,7 +13,7 @@
   "produces": ["application/json"],
   "servers": [
     {
-      "url": "http://localhost:3000/api"
+      "url": "https://t2d-soyammy-backend.onrender.com/api"
     }
   ],
   "tags": [
