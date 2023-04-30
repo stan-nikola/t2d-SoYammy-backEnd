@@ -12,6 +12,19 @@
 ## Run the app with nodemon 
 
   npm run start:dev
+  
+ ## .env variables
+ 
+    PORT=
+    JWT_SECRET=
+    DB_HOST=
+    SENDGRID_API_KEY=
+
+    CLOUDINARY_NAME=
+    CLOUDINARY_KEY=
+    CLOUDINARY_SECRET=
+    UPLOAD_IMAGE_MAX_SIZE=   
+
 
 # REST API
 
