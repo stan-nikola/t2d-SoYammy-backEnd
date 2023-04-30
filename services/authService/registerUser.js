@@ -3,7 +3,7 @@ const { User } = require("../../models");
 const {
   RegistrationConflict,
   InvalidRegistrationData,
-  // checkPasswordValidation,
+  checkPasswordValidation,
 } = require("../../helpers");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -22,10 +22,10 @@ const registerUser = async (requestBody) => {
     );
   }
 
-  // const checkPasswordResult = checkPasswordValidation(password);
-  // if (checkPasswordResult) {
-  //   throw new InvalidRegistrationData(`${checkPasswordResult}`);
-  // }
+  const checkPasswordResult = checkPasswordValidation(password);
+  if (checkPasswordResult) {
+    throw new InvalidRegistrationData(`${checkPasswordResult}`);
+  }
 
   const hashPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
   const user = await User.findOne({ email });
@@ -41,7 +41,7 @@ const registerUser = async (requestBody) => {
   });
 
   const payload = { id: newUser._id };
-  const token = jwt.sign(payload, SECRET_KEY); // ДОБАВИТЬ СРОК ДЕЙСТВИЯ ТОКЕНА: { expiresIn: "1d" }
+  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "6h" }); // ДОБАВИТЬ СРОК ДЕЙСТВИЯ ТОКЕНА: { expiresIn: "1d" }
 
   const newUserWithToken = await User.findByIdAndUpdate(
     newUser._id,

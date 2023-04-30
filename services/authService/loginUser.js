@@ -21,7 +21,7 @@ const loginUser = async (requestBody) => {
   }
 
   const payload = { id: user._id };
-  const token = jwt.sign(payload, SECRET_KEY); // ДОБАВИТЬ СРОК ДЕЙСТВИЯ ТОКЕНА: { expiresIn: "1d" }
+  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "6h" }); // ДОБАВИТЬ СРОК ДЕЙСТВИЯ ТОКЕНА: { expiresIn: "1d" }
   return await User.findByIdAndUpdate(
     user._id,
     { numberOfVisits, lastVisit: today, token },
