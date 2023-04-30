@@ -23,6 +23,6 @@
     
 # REST API
 
-The REST API to the example app is described below.
+The REST API to the example app is described in Swagger api-docs: https://t2d-soyammy-backend.onrender.com/api-docs .
 
-Swagger api-docs: https://t2d-soyammy-backend.onrender.com/api-docs
+
