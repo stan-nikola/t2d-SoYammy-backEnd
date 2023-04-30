@@ -11,6 +11,7 @@ const getRecipesByCategory = async (category, skip, limit) => {
     {
       $match: {
         category,
+        owner: { $exists: false },
       },
     },
     { $setWindowFields: { output: { totalCount: { $count: {} } } } },

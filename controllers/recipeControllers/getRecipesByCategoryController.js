@@ -8,7 +8,11 @@ const getRecipesByCategoryController = async (req, res, next) => {
 
   const normalizeCategory = category.replace(/^\w/, (c) => c.toUpperCase());
 
-  const result = await getRecipesByCategory(normalizeCategory, skip, limit);
+  const result = await getRecipesByCategory(
+    normalizeCategory,
+    skip,
+    limit
+  );
 
   res.status(200).json(result);
 };
